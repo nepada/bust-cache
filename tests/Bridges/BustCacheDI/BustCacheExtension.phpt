@@ -27,7 +27,7 @@ class BustCacheExtensionTest extends Tester\TestCase
     {
         $configurator = new Nette\Configurator;
         $configurator->setTempDirectory(TEMP_DIR);
-        $configurator->setDebugMode(TRUE);
+        $configurator->setDebugMode(true);
         $configurator->addParameters(array('wwwDir' => __DIR__ . '/../../fixtures'));
         $configurator->addConfig(__DIR__ . '/../../fixtures/config.neon');
         $this->container = $configurator->createContainer();

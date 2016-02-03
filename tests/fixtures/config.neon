@@ -1,3 +1,7 @@
+services:
+    httpRequest: Nette\Http\Request(Nette\Http\UrlScript())
+    httpResponse: Nette\Http\Response
+
 extensions:
     bustCache: Nepada\Bridges\BustCacheDI\BustCacheExtension('%wwwDir%', true)
 
