@@ -43,8 +43,8 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
     {
         foreach ($this->getContainerBuilder()->findByType(ILatteFactory::class) as $latteFactory) {
             $latteFactory->addSetup(
-                '$httpRequest = ?; ?->onCompile[] = function ($engine) use ($httpRequest) { $engine->getCompiler()->addMacro("bustCache", new ' . BustCacheMacro::class . '($engine->getCompiler(), ?, preg_replace(?, \'\', rtrim($httpRequest->getUrl()->getBaseUrl(), \'/\')), ?)); }',
-                ['@\\' . Nette\Http\IRequest::class, '@self', $this->wwwDir, '#https?://[^/]+#A', $this->debugMode]
+                '?->onCompile[] = function ($engine) { $engine->getCompiler()->addMacro("bustCache", new ' . BustCacheMacro::class . '($engine->getCompiler(), ?, ?)); }',
+                ['@self', $this->wwwDir, $this->debugMode]
             );
         }
     }

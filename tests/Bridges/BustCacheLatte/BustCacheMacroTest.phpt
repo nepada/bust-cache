@@ -25,33 +25,33 @@ class BustCacheMacroTest extends TestCase
     public function testProductionMode()
     {
         $compiler = new Latte\Compiler;
-        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, '/basePath', false));
+        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, false));
 
         $node = $compiler->expandMacro('bustCache', '"/test.txt"');
         Assert::true($node->isEmpty);
         Assert::same(
-            '<?php echo $template->escape(\'/basePath/test.txt?a1d0c6e83f\') ?>',
+            '<?php echo $template->escape(\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', "'/test.txt'");
         Assert::true($node->isEmpty);
         Assert::same(
-            '<?php echo $template->escape(\'/basePath/test.txt?a1d0c6e83f\') ?>',
+            '<?php echo $template->escape(\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->isEmpty);
         Assert::same(
-            '<?php echo $template->escape(\'/basePath/test.txt?a1d0c6e83f\') ?>',
+            '<?php echo $template->escape(\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->isEmpty);
         Assert::same(
-            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl(\'/basePath\' . $file . \'?\' . Nepada\BustCache\Helpers::hash(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
+            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::hash(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
             $node->openingCode
         );
     }
@@ -59,19 +59,19 @@ class BustCacheMacroTest extends TestCase
     public function testDebugMode()
     {
         $compiler = new Latte\Compiler;
-        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, '/basePath', true));
+        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, true));
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->isEmpty);
         Assert::same(
-            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl(\'/basePath\' . "/test.txt" . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . "/test.txt"))) ?>',
+            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl("/test.txt" . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . "/test.txt"))) ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->isEmpty);
         Assert::same(
-            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl(\'/basePath\' . $file . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
+            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
             $node->openingCode
         );
     }
@@ -79,7 +79,7 @@ class BustCacheMacroTest extends TestCase
     public function testErrors()
     {
         $compiler = new Latte\Compiler;
-        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, '/basePath', true));
+        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, true));
 
         Assert::exception(
             function () use ($compiler) {

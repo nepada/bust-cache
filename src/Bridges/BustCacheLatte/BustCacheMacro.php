@@ -24,9 +24,6 @@ class BustCacheMacro implements Latte\IMacro
     /** @var string */
     private $wwwDir;
 
-    /** @var string */
-    private $basePath;
-
     /** @var bool */
     private $debugMode;
 
@@ -34,17 +31,15 @@ class BustCacheMacro implements Latte\IMacro
     /**
      * @param Latte\Compiler $compiler
      * @param string $wwwDir
-     * @param string $basePath
      * @param bool $debugMode
      */
-    public function __construct(Latte\Compiler $compiler, $wwwDir, $basePath = '', $debugMode = false)
+    public function __construct(Latte\Compiler $compiler, $wwwDir, $debugMode = false)
     {
         $this->compiler = $compiler;
         $this->wwwDir = (string) $wwwDir;
         if (!is_dir($this->wwwDir)) {
             throw DirectoryNotFoundException::fromDir($wwwDir);
         }
-        $this->basePath = (string) $basePath;
         $this->debugMode = (bool) $debugMode;
     }
 
@@ -84,16 +79,16 @@ class BustCacheMacro implements Latte\IMacro
         $writer = Latte\PhpWriter::using($node, $this->compiler);
 
         if ($this->debugMode) {
-            $node->openingCode = $writer->write('<?php echo %modify(%0.var . %2.word . \'?\' . Nepada\BustCache\Helpers::timestamp(%1.var . %2.word)) ?>', $this->basePath, $this->wwwDir, $file);
+            $node->openingCode = $writer->write('<?php echo %modify(%1.word . \'?\' . Nepada\BustCache\Helpers::timestamp(%0.var . %1.word)) ?>', $this->wwwDir, $file);
 
         } elseif (preg_match('#^(["\']?)[^$\'"]*\1$#', $file)) { // Static path
             $file = trim($file, '"\'');
-            $url = $this->basePath . $file . '?' . Helpers::hash($this->wwwDir . $file);
+            $url = $file . '?' . Helpers::hash($this->wwwDir . $file);
             $url = Latte\Runtime\Filters::safeUrl($url);
             $node->openingCode = $writer->write('<?php echo %escape(%var) ?>', $url);
 
         } else {
-            $node->openingCode = $writer->write('<?php echo %modify(%0.var . %2.word . \'?\' . Nepada\BustCache\Helpers::hash(%1.var . %2.word)) ?>', $this->basePath, $this->wwwDir, $file);
+            $node->openingCode = $writer->write('<?php echo %modify(%1.word . \'?\' . Nepada\BustCache\Helpers::hash(%0.var . %1.word)) ?>', $this->wwwDir, $file);
         }
     }
 
