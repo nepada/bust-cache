@@ -86,7 +86,7 @@ class BustCacheMacroTest extends TestCase
                 $compiler->expandMacro('bustCache', 'test', null, Latte\MacroNode::PREFIX_NONE);
             },
             Latte\CompileException::class,
-            'Unknown attribute n:bustCache'
+            'Unknown %a?%attribute n:%a?%bustCache'
         );
 
         Assert::error(
