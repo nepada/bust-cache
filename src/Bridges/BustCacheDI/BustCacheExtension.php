@@ -28,7 +28,7 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
      * @param string $wwwDir
      * @param bool $debugMode
      */
-    public function __construct($wwwDir, $debugMode)
+    public function __construct($wwwDir, $debugMode = false)
     {
         $this->wwwDir = $wwwDir;
         $this->debugMode = $debugMode;
