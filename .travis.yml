@@ -16,7 +16,7 @@ before_install:
     - composer self-update
 
 install:
-    - composer update --no-interaction --prefer-dist $dependencies
+    - composer update --no-interaction --prefer-source $dependencies
 
 script:
     - vendor/bin/tester tests -s -p php
