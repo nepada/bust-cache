@@ -35,7 +35,20 @@ Usage
 Example:
 
 ```latte
-<link rel="stylesheet" href="{$basePath}{bustCache /css/style.css}">
+<link rel="stylesheet" href="{bustCache /css/style.css}">
 ```
 
-It is not recommended (but supported) to pass variables into the macro, because they need to be resolved in run-time and thus the file is read on every request.
+In debug mode the macro busts cache by appending timestamp of last file modification:
+
+```latte
+<link rel="stylesheet" href="/css/style.css?1449177985">
+```
+
+In production mode the macro busts cache by appending first 10 letters of md5 hash of the file content:
+
+```latte
+<link rel="stylesheet" href="/css/style.css?a1d0c6e83f">
+```
+
+
+**Note:** It is not recommended (but supported) to pass variables into the macro, because they need to be resolved in run-time and thus the file is read on every request.
