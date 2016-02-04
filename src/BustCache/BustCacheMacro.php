@@ -4,12 +4,10 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
-namespace Nepada\Bridges\BustCacheLatte;
+namespace Nepada\BustCache;
 
 use Latte;
 use Latte\MacroNode;
-use Nepada\BustCache\DirectoryNotFoundException;
-use Nepada\BustCache\Helpers;
 
 
 /**

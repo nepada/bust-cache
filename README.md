@@ -25,7 +25,7 @@ extensions:
 If you're using stand-alone Latte, install the macro manually:
 ```php
 $compiler = $engine->getCompiler();
-$compiler->addMacro('bustCache', new Nepada\Bridges\BustCacheLatte\BustCacheMacro($compiler, $wwwDir, $debugMode));
+$compiler->addMacro('bustCache', new Nepada\BustCache\BustCacheMacro($compiler, $wwwDir, $debugMode));
 ```
 
 

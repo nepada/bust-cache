@@ -6,7 +6,7 @@
 
 namespace Nepada\Bridges\BustCacheDI;
 
-use Nepada\Bridges\BustCacheLatte\BustCacheMacro;
+use Nepada\BustCache\BustCacheMacro;
 use Nette;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 

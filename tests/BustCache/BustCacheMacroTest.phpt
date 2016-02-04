@@ -4,22 +4,22 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
-namespace NepadaTests\Bridges\BustCacheLatte;
+namespace NepadaTests\BustCache;
 
-use Nepada\Bridges\BustCacheLatte\BustCacheMacro;
+use Nepada\BustCache\BustCacheMacro;
 use Nette;
 use Latte;
 use Tester\Assert;
 use Tester\TestCase;
 
 
-require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 
 class BustCacheMacroTest extends TestCase
 {
 
-    const FIXTURES_DIR = __DIR__ . '/../../fixtures';
+    const FIXTURES_DIR = __DIR__ . '/../fixtures';
 
 
     public function testProductionMode()
