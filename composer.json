@@ -2,8 +2,8 @@
     "name": "nepada/bust-cache",
     "type": "library",
     "license": "BSD-3-Clause",
-    "description": "Cache busting macro for Latte from Nette Framework.",
-    "keywords": ["nette", "latte", "bust", "cache"],
+    "description": "Cache busting macro for Latte.",
+    "keywords": ["latte", "bust", "cache", "nette"],
     "support": {
         "email": "petr@pada.cz",
         "issues": "https://github.com/nepada/bust-cache/issues"
