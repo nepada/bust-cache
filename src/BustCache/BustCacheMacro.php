@@ -41,11 +41,11 @@ class BustCacheMacro implements Latte\IMacro
         $this->debugMode = (bool) $debugMode;
     }
 
-    function initialize()
+    public function initialize()
     {
     }
 
-    function finalize()
+    public function finalize()
     {
     }
 
@@ -56,7 +56,7 @@ class BustCacheMacro implements Latte\IMacro
      * @return bool
      * @throws Latte\CompileException
      */
-    function nodeOpened(MacroNode $node)
+    public function nodeOpened(MacroNode $node)
     {
         if ($node->prefix) {
             return false;
@@ -95,7 +95,7 @@ class BustCacheMacro implements Latte\IMacro
      *
      * @param MacroNode $node
      */
-    function nodeClosed(MacroNode $node)
+    public function nodeClosed(MacroNode $node)
     {
     }
 
