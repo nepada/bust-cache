@@ -16,7 +16,7 @@ use Tester\TestCase;
 require __DIR__ . '/../bootstrap.php';
 
 
-class BustCacheTest extends TestCase
+class HelpersTest extends TestCase
 {
 
     public function testHash()
@@ -46,4 +46,4 @@ class BustCacheTest extends TestCase
 }
 
 
-\run(new BustCacheTest());
+\run(new HelpersTest());

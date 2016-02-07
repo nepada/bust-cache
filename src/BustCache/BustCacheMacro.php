@@ -63,12 +63,14 @@ class BustCacheMacro implements Latte\IMacro
         }
 
         if ($node->modifiers) {
-            trigger_error("Modifiers are not allowed in {{$node->name}}.", E_USER_WARNING);
+            throw new Latte\CompileException("Modifiers are not allowed in {{$node->name}}.");
         }
 
         $file = $node->tokenizer->fetchWord();
-        if ($node->tokenizer->fetchWord()) {
-            throw new Latte\CompileException("BustCache macro does not support multiple arguments.");
+        if ($file === false) {
+            throw new Latte\CompileException("Missing file name in {{$node->name}}.");
+        } elseif ($node->tokenizer->fetchWord()) {
+            throw new Latte\CompileException("Multiple arguments are not supported in {{$node->name}}.");
         }
 
         $node->isEmpty = true;

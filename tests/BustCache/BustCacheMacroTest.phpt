@@ -89,12 +89,20 @@ class BustCacheMacroTest extends TestCase
             'Unknown %a?%attribute n:%a?%bustCache'
         );
 
-        Assert::error(
+        Assert::exception(
             function () use ($compiler) {
                 $compiler->expandMacro('bustCache', 'test', '|modify');
             },
-            E_USER_WARNING,
+            Latte\CompileException::class,
             'Modifiers are not allowed in {bustCache}.'
+        );
+
+        Assert::exception(
+            function () use ($compiler) {
+                $compiler->expandMacro('bustCache', '');
+            },
+            Latte\CompileException::class,
+            'Missing file name in {bustCache}.'
         );
 
         Assert::exception(
@@ -102,7 +110,7 @@ class BustCacheMacroTest extends TestCase
                 $compiler->expandMacro('bustCache', 'multi, word');
             },
             Latte\CompileException::class,
-            'BustCache macro does not support multiple arguments.'
+            'Multiple arguments are not supported in {bustCache}.'
         );
     }
 
