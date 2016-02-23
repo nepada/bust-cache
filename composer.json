@@ -25,6 +25,9 @@
         "nette/application": "^2.3@dev",
         "tracy/tracy": "^2.3@dev"
     },
+    "suggest": {
+        "nette/di": "for integration with Nette DI container"
+    },
     "autoload": {
         "psr-4": {
             "Nepada\\Bridges\\": "src/Bridges/",
