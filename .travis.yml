@@ -4,6 +4,11 @@ php:
     - 7.0
     - hhvm
 
+env:
+    matrix:
+        - dependencies=""
+        - dependencies="--prefer-stable"
+
 matrix:
     allow_failures:
         - php: hhvm
