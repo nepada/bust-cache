@@ -29,29 +29,29 @@ class BustCacheMacroTest extends TestCase
 
         $node = $compiler->expandMacro('bustCache', '"/test.txt"');
         Assert::true($node->isEmpty);
-        Assert::same(
-            '<?php echo $template->escape(\'/test.txt?a1d0c6e83f\') ?>',
+        Assert::match(
+            '<?php echo %a%->escape%a%\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', "'/test.txt'");
         Assert::true($node->isEmpty);
-        Assert::same(
-            '<?php echo $template->escape(\'/test.txt?a1d0c6e83f\') ?>',
+        Assert::match(
+            '<?php echo %a%->escape%a%\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->isEmpty);
-        Assert::same(
-            '<?php echo $template->escape(\'/test.txt?a1d0c6e83f\') ?>',
+        Assert::match(
+            '<?php echo %a%->escape%a%\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->isEmpty);
-        Assert::same(
-            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::hash(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
+        Assert::match(
+            '<?php echo %a%->escape%a%Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::hash(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
             $node->openingCode
         );
     }
@@ -63,15 +63,15 @@ class BustCacheMacroTest extends TestCase
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->isEmpty);
-        Assert::same(
-            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl("/test.txt" . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . "/test.txt"))) ?>',
+        Assert::match(
+            '<?php echo %a%->escape%a%Filters::safeUrl("/test.txt" . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . "/test.txt"))) ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->isEmpty);
-        Assert::same(
-            '<?php echo $template->escape(Latte\Runtime\Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
+        Assert::match(
+            '<?php echo %a%->escape%a%Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
             $node->openingCode
         );
     }
