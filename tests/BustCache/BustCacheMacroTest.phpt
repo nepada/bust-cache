@@ -53,7 +53,7 @@ class BustCacheMacroTest extends TestCase
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->isEmpty);
         Assert::match(
-            '<?php echo %a%->escape%a%Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::hash(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
+            '#<\?php echo .*->escape.*safeUrl.*\$file \. \'\?\' \. Nepada\\\\BustCache\\\\Helpers::hash\(\'' . preg_quote(self::FIXTURES_DIR, '#') . '\' . \$file\)\)\) \?>#i',
             $node->openingCode
         );
     }
@@ -66,14 +66,14 @@ class BustCacheMacroTest extends TestCase
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->isEmpty);
         Assert::match(
-            '<?php echo %a%->escape%a%Filters::safeUrl("/test.txt" . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . "/test.txt"))) ?>',
+            '#<\?php echo .*->escape.*safeUrl.*"/test\.txt" \. \'\?\' \. Nepada\\\\BustCache\\\\Helpers::timestamp\(\'' . preg_quote(self::FIXTURES_DIR, '#') . '\' . "/test\.txt"\)\)\) \?>#i',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->isEmpty);
         Assert::match(
-            '<?php echo %a%->escape%a%Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
+            '#<\?php echo .*->escape.*safeUrl.*\$file \. \'\?\' \. Nepada\\\\BustCache\\\\Helpers::timestamp\(\'' . preg_quote(self::FIXTURES_DIR, '#') . '\' . \$file\)\)\) \?>#i',
             $node->openingCode
         );
     }
