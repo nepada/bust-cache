@@ -85,6 +85,12 @@ class BustCacheMacroTest extends TestCase
 
         Assert::exception(
             function () use ($compiler) {
+                // Set HtmlNode
+                $rc = Nette\Reflection\ClassType::from($compiler);
+                $property = $rc->getProperty('htmlNode');
+                $property->setAccessible(true);
+                $property->setValue($compiler, new Latte\HtmlNode('div'));
+
                 $compiler->expandMacro('bustCache', 'test', null, Latte\MacroNode::PREFIX_NONE);
             },
             Latte\CompileException::class,
