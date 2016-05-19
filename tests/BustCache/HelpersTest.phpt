@@ -1,5 +1,7 @@
 <?php
 /**
+ * Test: Nepada\BustCache\HelpersTest
+ *
  * This file is part of the nepada/bust-cache.
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
