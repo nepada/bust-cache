@@ -8,9 +8,9 @@
 
 namespace NepadaTests\BustCache;
 
+use Latte;
 use Nepada\BustCache\BustCacheMacro;
 use Nette;
-use Latte;
 use Tester\Assert;
 use Tester\TestCase;
 

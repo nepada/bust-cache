@@ -9,8 +9,6 @@
 namespace NepadaTests\BustCache;
 
 use Nepada;
-use Nette;
-use Latte;
 use Tester\Assert;
 use Tester\TestCase;
 

@@ -6,8 +6,6 @@
 
 namespace Nepada\BustCache;
 
-use Latte;
-
 
 class Helpers
 {

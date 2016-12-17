@@ -6,20 +6,25 @@
 
 namespace Nepada\BustCache;
 
+use LogicException;
+use RuntimeException;
+
 
 /**
  * Common interface for exceptions
  */
 interface Exception
 {
+
 }
 
 
 /**
  * The exception that is thrown when an I/O error occurs.
  */
-class IOException extends \RuntimeException implements Exception
+class IOException extends RuntimeException implements Exception
 {
+
 }
 
 
@@ -62,6 +67,7 @@ class DirectoryNotFoundException extends IOException
 /**
  * The exception that is thrown when static class is instantiated.
  */
-class StaticClassException extends \LogicException
+class StaticClassException extends LogicException
 {
+
 }

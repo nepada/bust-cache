@@ -42,7 +42,8 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
     public function beforeCompile()
     {
         $container = $this->getContainerBuilder();
-        if ($latteFactory = $container->getByType(ILatteFactory::class)) {
+        $latteFactory = $container->getByType(ILatteFactory::class);
+        if ($latteFactory) {
             $container->getDefinition($latteFactory)->addSetup(
                 '?->onCompile[] = function ($engine) { $engine->getCompiler()->addMacro("bustCache", new ' . BustCacheMacro::class . '($engine->getCompiler(), ?, ?)); }',
                 ['@self', $this->wwwDir, $this->debugMode]
