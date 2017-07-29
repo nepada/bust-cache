@@ -16,15 +16,15 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "latte/latte": "^2.4@dev"
+        "latte/latte": "^2.4.1@dev"
     },
     "require-dev": {
         "nette/tester": "^1.7",
         "nette/bootstrap": "^2.4@dev || ^3.0@dev",
-        "nette/di": "^2.4@dev || ^3.0@dev",
+        "nette/di": "^2.4.7@dev || ^3.0@dev",
         "nette/application": "^2.4@dev || ^3.0@dev",
 
-        "nette/utils": "^2.4@dev || ^3.0@dev",
+        "nette/utils": "^2.4.5@dev || ^3.0@dev",
         "nette/component-model": "^2.3@dev || ^3.0@dev",
         "nette/reflection": "^2.4@dev || ^3.0@dev",
         "nette/neon": "^2.4@dev || ^3.0@dev",
