@@ -4,8 +4,11 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace Nepada\Bridges\BustCacheDI;
 
+use Latte;
 use Nepada\BustCache\BustCacheMacro;
 use Nette;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
@@ -13,9 +16,6 @@ use Nette\Bridges\ApplicationLatte\ILatteFactory;
 
 class BustCacheExtension extends Nette\DI\CompilerExtension
 {
-
-    /** @var array */
-    public $defaults = [];
 
     /** @var string */
     private $wwwDir;
@@ -28,24 +28,30 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
      * @param string $wwwDir
      * @param bool $debugMode
      */
-    public function __construct($wwwDir, $debugMode = false)
+    public function __construct(string $wwwDir, bool $debugMode = false)
     {
         $this->wwwDir = $wwwDir;
         $this->debugMode = $debugMode;
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     */
     public function loadConfiguration()
     {
-        $this->validateConfig($this->defaults);
+        $this->validateConfig([]);
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     */
     public function beforeCompile()
     {
         $container = $this->getContainerBuilder();
         $latteFactory = $container->getByType(ILatteFactory::class);
         if ($latteFactory) {
             $container->getDefinition($latteFactory)->addSetup(
-                '?->onCompile[] = function ($engine) { $engine->getCompiler()->addMacro("bustCache", new ' . BustCacheMacro::class . '($engine->getCompiler(), ?, ?)); }',
+                '?->onCompile[] = function (' . Latte\Engine::class . ' $engine): void { $engine->addMacro("bustCache", new ' . BustCacheMacro::class . '(?, ?)); }',
                 ['@self', $this->wwwDir, $this->debugMode]
             );
         }

@@ -6,6 +6,8 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace NepadaTests\BustCache;
 
 use Nepada;
@@ -19,12 +21,12 @@ require __DIR__ . '/../bootstrap.php';
 class HelpersTest extends TestCase
 {
 
-    public function testHash()
+    public function testHash(): void
     {
         Assert::same('a1d0c6e83f', Nepada\BustCache\Helpers::hash(__DIR__ . '/../fixtures/test.txt'));
     }
 
-    public function testErrors()
+    public function testErrors(): void
     {
         Assert::exception(
             function () {

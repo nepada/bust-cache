@@ -4,6 +4,8 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace Nepada\BustCache;
 
 use LogicException;
@@ -38,7 +40,7 @@ class FileNotFoundException extends IOException
      * @param string $file
      * @return FileNotFoundException
      */
-    public static function fromFile($file)
+    public static function fromFile(string $file): self
     {
         return new static("Unable to read file '$file' - the file does not exist or is not readable.");
     }
@@ -56,7 +58,7 @@ class DirectoryNotFoundException extends IOException
      * @param string $directory
      * @return DirectoryNotFoundException
      */
-    public static function fromDir($directory)
+    public static function fromDir(string $directory): self
     {
         return new static("Unable to read directory '$directory' - the directory does not exist, or is not readable.");
     }

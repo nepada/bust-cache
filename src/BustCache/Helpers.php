@@ -4,11 +4,18 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace Nepada\BustCache;
+
+use Latte;
 
 
 class Helpers
 {
+
+    use Latte\Strict;
+
 
     /**
      * @throws StaticClassException
@@ -23,13 +30,15 @@ class Helpers
      * @return string
      * @throws FileNotFoundException
      */
-    public static function timestamp($file)
+    public static function timestamp(string $file): string
     {
         if (!file_exists($file)) {
             throw FileNotFoundException::fromFile($file);
         }
 
-        return @filemtime($file) ?: time();
+        $timestamp = @filemtime($file) ?: time();
+
+        return (string) $timestamp;
     }
 
     /**
@@ -37,7 +46,7 @@ class Helpers
      * @return string
      * @throws FileNotFoundException
      */
-    public static function hash($file)
+    public static function hash(string $file): string
     {
         if (!file_exists($file)) {
             throw FileNotFoundException::fromFile($file);

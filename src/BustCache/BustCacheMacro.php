@@ -4,6 +4,8 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace Nepada\BustCache;
 
 use Latte;
@@ -16,8 +18,7 @@ use Latte\MacroNode;
 class BustCacheMacro implements Latte\IMacro
 {
 
-    /** @var Latte\Compiler */
-    private $compiler;
+    use Latte\Strict;
 
     /** @var string */
     private $wwwDir;
@@ -27,30 +28,36 @@ class BustCacheMacro implements Latte\IMacro
 
 
     /**
-     * @param Latte\Compiler $compiler
      * @param string $wwwDir
      * @param bool $debugMode
      */
-    public function __construct(Latte\Compiler $compiler, $wwwDir, $debugMode = false)
+    public function __construct(string $wwwDir, bool $debugMode = false)
     {
-        $this->compiler = $compiler;
-        $this->wwwDir = (string) $wwwDir;
+        $this->wwwDir = $wwwDir;
         if (!is_dir($this->wwwDir)) {
             throw DirectoryNotFoundException::fromDir($wwwDir);
         }
-        $this->debugMode = (bool) $debugMode;
+        $this->debugMode = $debugMode;
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     */
     public function initialize()
     {
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     */
     public function finalize()
     {
     }
 
     /**
      * New node is found. Returns FALSE to reject.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      *
      * @param MacroNode $node
      * @return bool
@@ -66,6 +73,7 @@ class BustCacheMacro implements Latte\IMacro
             throw new Latte\CompileException("Modifiers are not allowed in {{$node->name}}.");
         }
 
+        /** @var string|false $file */
         $file = $node->tokenizer->fetchWord();
         if ($file === false) {
             throw new Latte\CompileException("Missing file name in {{$node->name}}.");
@@ -76,7 +84,7 @@ class BustCacheMacro implements Latte\IMacro
         $node->isEmpty = true;
         $node->modifiers = '|safeurl|escape'; // auto-escape
 
-        $writer = Latte\PhpWriter::using($node, $this->compiler);
+        $writer = Latte\PhpWriter::using($node);
 
         if ($this->debugMode) {
             $node->openingCode = $writer->write('<?php echo %modify(%1.word . \'?\' . Nepada\BustCache\Helpers::timestamp(%0.var . %1.word)) ?>', $this->wwwDir, $file);
@@ -90,10 +98,14 @@ class BustCacheMacro implements Latte\IMacro
         } else {
             $node->openingCode = $writer->write('<?php echo %modify(%1.word . \'?\' . Nepada\BustCache\Helpers::hash(%0.var . %1.word)) ?>', $this->wwwDir, $file);
         }
+
+        return true;
     }
 
     /**
      * Node is closed.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      *
      * @param MacroNode $node
      */

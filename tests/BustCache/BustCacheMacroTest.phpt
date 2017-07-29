@@ -6,6 +6,8 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace NepadaTests\BustCache;
 
 use Latte;
@@ -21,13 +23,13 @@ require __DIR__ . '/../bootstrap.php';
 class BustCacheMacroTest extends TestCase
 {
 
-    const FIXTURES_DIR = __DIR__ . '/../fixtures';
+    private const FIXTURES_DIR = __DIR__ . '/../fixtures';
 
 
-    public function testProductionMode()
+    public function testProductionMode(): void
     {
         $compiler = new Latte\Compiler;
-        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, false));
+        $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, false));
 
         $node = $compiler->expandMacro('bustCache', '"/test.txt"');
         Assert::true($node->isEmpty);
@@ -58,10 +60,10 @@ class BustCacheMacroTest extends TestCase
         );
     }
 
-    public function testDebugMode()
+    public function testDebugMode(): void
     {
         $compiler = new Latte\Compiler;
-        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, true));
+        $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, true));
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->isEmpty);
@@ -78,10 +80,10 @@ class BustCacheMacroTest extends TestCase
         );
     }
 
-    public function testErrors()
+    public function testErrors(): void
     {
         $compiler = new Latte\Compiler;
-        $compiler->addMacro('bustCache', new BustCacheMacro($compiler, self::FIXTURES_DIR, true));
+        $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, true));
 
         Assert::exception(
             function () use ($compiler) {

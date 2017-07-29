@@ -6,6 +6,8 @@
  * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
  */
 
+declare(strict_types = 1);
+
 namespace NepadaTests\Bridges\BustCacheDI;
 
 use Latte;
@@ -25,7 +27,7 @@ class BustCacheExtensionTest extends Tester\TestCase
     private $container;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         $configurator = new Nette\Configurator;
         $configurator->setTempDirectory(TEMP_DIR);
@@ -35,7 +37,7 @@ class BustCacheExtensionTest extends Tester\TestCase
         $this->container = $configurator->createContainer();
     }
 
-    public function testContainer()
+    public function testContainer(): void
     {
         /** @var Latte\Engine $latte */
         $latte = $this->container->getByType(ILatteFactory::class)->create();
