@@ -2,6 +2,7 @@ Bust Cache Macro
 ================
 
 [![Build Status](https://travis-ci.org/nepada/bust-cache.svg?branch=master)](https://travis-ci.org/nepada/bust-cache)
+[![Coverage Status](https://coveralls.io/repos/github/nepada/bust-cache/badge.svg?branch=master)](https://coveralls.io/github/nepada/bust-cache?branch=master)
 [![Downloads this Month](https://img.shields.io/packagist/dm/nepada/bust-cache.svg)](https://packagist.org/packages/nepada/bust-cache)
 [![Latest stable](https://img.shields.io/packagist/v/nepada/bust-cache.svg)](https://packagist.org/packages/nepada/bust-cache)
 
