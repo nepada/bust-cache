@@ -20,7 +20,7 @@ Register the extension in `config.neon`:
 
 ```yaml
 extensions:
-	- Nepada\Bridges\BustCacheDI\BustCacheExtension(%wwwDir%, %debugMode%)
+    - Nepada\Bridges\BustCacheDI\BustCacheExtension(%wwwDir%, %debugMode%)
 ```
 
 If you're using stand-alone Latte, install the macro manually:
