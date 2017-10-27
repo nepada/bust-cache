@@ -55,4 +55,4 @@ class BustCacheExtensionTest extends Tester\TestCase
 }
 
 
-\run(new BustCacheExtensionTest());
+(new BustCacheExtensionTest())->run();

@@ -130,4 +130,4 @@ class BustCacheMacroTest extends TestCase
 }
 
 
-\run(new BustCacheMacroTest());
+(new BustCacheMacroTest())->run();
