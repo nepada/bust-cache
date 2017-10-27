@@ -46,7 +46,7 @@ class BustCacheExtensionTest extends Tester\TestCase
         $latte = $this->container->getByType(ILatteFactory::class)->create();
         $latte->setLoader(new Latte\Loaders\StringLoader);
         Assert::noError(
-            function () use ($latte) {
+            function () use ($latte): void {
                 $latte->compile('{bustCache test}');
             }
         );

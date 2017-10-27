@@ -89,7 +89,7 @@ class BustCacheMacroTest extends TestCase
         $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, true));
 
         Assert::exception(
-            function () use ($compiler) {
+            function () use ($compiler): void {
                 // Set HtmlNode
                 $rc = Nette\Reflection\ClassType::from($compiler);
                 $property = $rc->getProperty('htmlNode');
@@ -103,7 +103,7 @@ class BustCacheMacroTest extends TestCase
         );
 
         Assert::exception(
-            function () use ($compiler) {
+            function () use ($compiler): void {
                 $compiler->expandMacro('bustCache', 'test', '|modify');
             },
             Latte\CompileException::class,
@@ -111,7 +111,7 @@ class BustCacheMacroTest extends TestCase
         );
 
         Assert::exception(
-            function () use ($compiler) {
+            function () use ($compiler): void {
                 $compiler->expandMacro('bustCache', '');
             },
             Latte\CompileException::class,
@@ -119,7 +119,7 @@ class BustCacheMacroTest extends TestCase
         );
 
         Assert::exception(
-            function () use ($compiler) {
+            function () use ($compiler): void {
                 $compiler->expandMacro('bustCache', 'multi, word');
             },
             Latte\CompileException::class,

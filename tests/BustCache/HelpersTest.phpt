@@ -32,7 +32,7 @@ class HelpersTest extends TestCase
     public function testErrors(): void
     {
         Assert::exception(
-            function () {
+            function (): void {
                 Nepada\BustCache\Helpers::timestamp('nonExistent');
             },
             Nepada\BustCache\FileNotFoundException::class,
@@ -40,7 +40,7 @@ class HelpersTest extends TestCase
         );
 
         Assert::exception(
-            function () {
+            function (): void {
                 Nepada\BustCache\Helpers::hash('nonExistent');
             },
             Nepada\BustCache\FileNotFoundException::class,
