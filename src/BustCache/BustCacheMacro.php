@@ -40,10 +40,7 @@ class BustCacheMacro implements Latte\IMacro
         $this->debugMode = $debugMode;
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     */
-    public function initialize()
+    public function initialize(): void
     {
     }
 
@@ -109,11 +106,9 @@ class BustCacheMacro implements Latte\IMacro
     /**
      * Node is closed.
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     *
      * @param MacroNode $node
      */
-    public function nodeClosed(MacroNode $node)
+    public function nodeClosed(MacroNode $node): void
     {
     }
 

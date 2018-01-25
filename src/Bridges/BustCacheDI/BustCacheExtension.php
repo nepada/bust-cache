@@ -34,18 +34,12 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
         $this->debugMode = $debugMode;
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     */
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         $this->validateConfig([]);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     */
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         $container = $this->getContainerBuilder();
         $latteFactory = $container->getByType(ILatteFactory::class);
