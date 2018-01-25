@@ -65,11 +65,11 @@ class BustCacheMacro implements Latte\IMacro
      */
     public function nodeOpened(MacroNode $node)
     {
-        if ($node->prefix) {
+        if ($node->prefix != '') { // intentionally !=
             return false;
         }
 
-        if ($node->modifiers) {
+        if ($node->modifiers != '') {  // intentionally !=
             throw new Latte\CompileException("Modifiers are not allowed in {{$node->name}}.");
         }
 
@@ -77,7 +77,11 @@ class BustCacheMacro implements Latte\IMacro
         $file = $node->tokenizer->fetchWord();
         if ($file === false) {
             throw new Latte\CompileException("Missing file name in {{$node->name}}.");
-        } elseif ($node->tokenizer->fetchWord()) {
+        }
+
+        /** @var string|false $word */
+        $word = $node->tokenizer->fetchWord();
+        if ($word !== false) {
             throw new Latte\CompileException("Multiple arguments are not supported in {{$node->name}}.");
         }
 
