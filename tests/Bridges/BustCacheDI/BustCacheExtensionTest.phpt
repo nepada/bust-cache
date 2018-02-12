@@ -25,7 +25,7 @@ class BustCacheExtensionTest extends Tester\TestCase
 
     public function setUp(): void
     {
-        $configurator = new Nette\Configurator;
+        $configurator = new Nette\Configurator();
         $configurator->setTempDirectory(TEMP_DIR);
         $configurator->setDebugMode(true);
         $configurator->addParameters(['wwwDir' => __DIR__ . '/../../fixtures']);
@@ -37,7 +37,7 @@ class BustCacheExtensionTest extends Tester\TestCase
     {
         /** @var Latte\Engine $latte */
         $latte = $this->container->getByType(ILatteFactory::class)->create();
-        $latte->setLoader(new Latte\Loaders\StringLoader);
+        $latte->setLoader(new Latte\Loaders\StringLoader());
         Assert::noError(
             function () use ($latte): void {
                 $latte->compile('{bustCache test}');

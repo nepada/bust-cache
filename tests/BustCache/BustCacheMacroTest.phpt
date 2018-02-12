@@ -24,7 +24,7 @@ class BustCacheMacroTest extends TestCase
 
     public function testProductionMode(): void
     {
-        $compiler = new Latte\Compiler;
+        $compiler = new Latte\Compiler();
         $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, false));
 
         $node = $compiler->expandMacro('bustCache', '"/test.txt"');
@@ -58,7 +58,7 @@ class BustCacheMacroTest extends TestCase
 
     public function testDebugMode(): void
     {
-        $compiler = new Latte\Compiler;
+        $compiler = new Latte\Compiler();
         $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, true));
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
@@ -78,7 +78,7 @@ class BustCacheMacroTest extends TestCase
 
     public function testErrors(): void
     {
-        $compiler = new Latte\Compiler;
+        $compiler = new Latte\Compiler();
         $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, true));
 
         Assert::exception(

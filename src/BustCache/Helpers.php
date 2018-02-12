@@ -17,7 +17,7 @@ class Helpers
      */
     final public function __construct()
     {
-        throw new StaticClassException;
+        throw new StaticClassException();
     }
 
     /**
