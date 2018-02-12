@@ -1,9 +1,4 @@
 <?php
-/**
- * This file is part of the nepada/bust-cache.
- * Copyright (c) 2016 Petr Morávek (petr@pada.cz)
- */
-
 declare(strict_types = 1);
 
 namespace Nepada\BustCache;
