@@ -9,7 +9,6 @@ use Nette;
 use Tester\Assert;
 use Tester\TestCase;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -20,7 +19,6 @@ class BustCacheMacroTest extends TestCase
 {
 
     private const FIXTURES_DIR = __DIR__ . '/../fixtures';
-
 
     public function testProductionMode(): void
     {

@@ -5,12 +5,10 @@ namespace Nepada\BustCache;
 
 use Latte;
 
-
 class Helpers
 {
 
     use Latte\Strict;
-
 
     /**
      * @throws StaticClassException

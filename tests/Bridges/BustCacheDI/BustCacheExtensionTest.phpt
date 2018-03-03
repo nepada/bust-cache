@@ -9,7 +9,6 @@ use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Tester;
 use Tester\Assert;
 
-
 require_once __DIR__ . '/../../bootstrap.php';
 
 
@@ -22,8 +21,7 @@ class BustCacheExtensionTest extends Tester\TestCase
     /** @var Nette\DI\Container */
     private $container;
 
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $configurator = new Nette\Configurator();
         $configurator->setTempDirectory(TEMP_DIR);

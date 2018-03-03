@@ -6,7 +6,6 @@ namespace Nepada\BustCache;
 use Latte;
 use Latte\MacroNode;
 
-
 /**
  * Macro {bustCache ...}
  */
@@ -20,7 +19,6 @@ class BustCacheMacro implements Latte\IMacro
 
     /** @var bool */
     private $debugMode;
-
 
     public function __construct(string $wwwDir, bool $debugMode = false)
     {
@@ -46,7 +44,6 @@ class BustCacheMacro implements Latte\IMacro
      * New node is found. Returns FALSE to reject.
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     *
      * @param MacroNode $node
      * @return bool
      * @throws Latte\CompileException

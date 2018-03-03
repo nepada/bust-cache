@@ -6,7 +6,6 @@ namespace Nepada\BustCache;
 use LogicException;
 use RuntimeException;
 
-
 /**
  * Common interface for exceptions
  */

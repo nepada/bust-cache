@@ -8,7 +8,6 @@ use Nepada\BustCache\BustCacheMacro;
 use Nette;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 
-
 class BustCacheExtension extends Nette\DI\CompilerExtension
 {
 
@@ -17,7 +16,6 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
 
     /** @var bool */
     private $debugMode;
-
 
     public function __construct(string $wwwDir, bool $debugMode = false)
     {
