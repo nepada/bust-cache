@@ -22,10 +22,6 @@ class BustCacheMacro implements Latte\IMacro
     private $debugMode;
 
 
-    /**
-     * @param string $wwwDir
-     * @param bool $debugMode
-     */
     public function __construct(string $wwwDir, bool $debugMode = false)
     {
         $this->wwwDir = $wwwDir;
