@@ -50,11 +50,11 @@ class BustCacheMacro implements Latte\IMacro
      */
     public function nodeOpened(MacroNode $node)
     {
-        if ($node->prefix != '') { // intentionally !=
+        if ($node->prefix !== '' && $node->prefix !== null) {
             return false;
         }
 
-        if ($node->modifiers != '') {  // intentionally !=
+        if ($node->modifiers !== '') {
             throw new Latte\CompileException("Modifiers are not allowed in {{$node->name}}.");
         }
 
