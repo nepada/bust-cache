@@ -35,9 +35,11 @@ class BustCacheMacro implements Latte\IMacro
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @return mixed[]|null [prolog, epilog]
      */
     public function finalize()
     {
+        return null;
     }
 
     /**
