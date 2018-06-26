@@ -78,7 +78,7 @@ class BustCacheMacro implements Latte\IMacro
         if ($this->debugMode) {
             $node->openingCode = $writer->write('<?php echo %modify(%1.word . \'?\' . Nepada\BustCache\Helpers::timestamp(%0.var . %1.word)) ?>', $this->wwwDir, $file);
 
-        } elseif (preg_match('#^(["\']?)[^$\'"]*\1$#', $file)) { // Static path
+        } elseif ((bool) preg_match('#^(["\']?)[^$\'"]*\1$#', $file)) { // Static path
             $file = trim($file, '"\'');
             $url = $file . '?' . Helpers::hash($this->wwwDir . $file);
             $url = Latte\Runtime\Filters::safeUrl($url);
