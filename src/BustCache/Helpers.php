@@ -38,6 +38,7 @@ class Helpers
      * @param string $file
      * @return string
      * @throws FileNotFoundException
+     * @throws IOException
      */
     public static function hash(string $file): string
     {
@@ -45,7 +46,12 @@ class Helpers
             throw FileNotFoundException::fromFile($file);
         }
 
-        return substr(md5(file_get_contents($file)), 0, 10);
+        $content = @file_get_contents($file);
+        if ($content === false) {
+            throw new IOException("Unable to read file '$file'.");
+        }
+
+        return substr(md5($content), 0, 10);
     }
 
 }
