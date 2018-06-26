@@ -10,6 +10,7 @@ parameters:
             - RuntimeException
         ignoredExceptions:
             - LogicException
+            - Nette\InvalidStateException
 
     excludes_analyse:
         - %currentWorkingDirectory%/tests/bootstrap.php

@@ -3,22 +3,10 @@ declare(strict_types = 1);
 
 namespace Nepada\BustCache;
 
-use LogicException;
-use RuntimeException;
-
-/**
- * Common interface for exceptions
- */
-interface Exception extends \Throwable
-{
-
-}
-
-
 /**
  * The exception that is thrown when an I/O error occurs.
  */
-class IOException extends RuntimeException implements Exception
+class IOException extends \RuntimeException
 {
 
 }
@@ -30,13 +18,10 @@ class IOException extends RuntimeException implements Exception
 class FileNotFoundException extends IOException
 {
 
-    /**
-     * @param string $file
-     * @return FileNotFoundException
-     */
-    public static function fromFile(string $file): self
+    public function __construct(string $file, ?\Throwable $previous = null)
     {
-        return new static("Unable to read file '$file' - the file does not exist or is not readable.");
+        $message = "Unable to read file '$file' - the file does not exist or is not readable.";
+        parent::__construct($message, 0, $previous);
     }
 
 }
@@ -48,13 +33,10 @@ class FileNotFoundException extends IOException
 class DirectoryNotFoundException extends IOException
 {
 
-    /**
-     * @param string $directory
-     * @return DirectoryNotFoundException
-     */
-    public static function fromDir(string $directory): self
+    public function __construct(string $directory, ?\Throwable $previous = null)
     {
-        return new static("Unable to read directory '$directory' - the directory does not exist, or is not readable.");
+        $message = "Unable to read directory '$directory' - the directory does not exist, or is not readable.";
+        parent::__construct($message, 0, $previous);
     }
 
 }
@@ -63,7 +45,7 @@ class DirectoryNotFoundException extends IOException
 /**
  * The exception that is thrown when static class is instantiated.
  */
-class StaticClassException extends LogicException
+class StaticClassException extends \LogicException
 {
 
 }

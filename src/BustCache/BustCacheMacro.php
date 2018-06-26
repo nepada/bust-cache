@@ -20,11 +20,16 @@ class BustCacheMacro implements Latte\IMacro
     /** @var bool */
     private $debugMode;
 
+    /**
+     * @param string $wwwDir
+     * @param bool $debugMode
+     * @throws DirectoryNotFoundException
+     */
     public function __construct(string $wwwDir, bool $debugMode = false)
     {
         $this->wwwDir = $wwwDir;
         if (!is_dir($this->wwwDir)) {
-            throw DirectoryNotFoundException::fromDir($wwwDir);
+            throw new DirectoryNotFoundException($wwwDir);
         }
         $this->debugMode = $debugMode;
     }
@@ -48,7 +53,7 @@ class BustCacheMacro implements Latte\IMacro
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      * @param MacroNode $node
      * @return bool
-     * @throws Latte\CompileException
+     * @throws IOException
      */
     public function nodeOpened(MacroNode $node)
     {

@@ -10,9 +10,6 @@ class Helpers
 
     use Latte\Strict;
 
-    /**
-     * @throws StaticClassException
-     */
     final public function __construct()
     {
         throw new StaticClassException();
@@ -26,7 +23,7 @@ class Helpers
     public static function timestamp(string $file): string
     {
         if (!file_exists($file)) {
-            throw FileNotFoundException::fromFile($file);
+            throw new FileNotFoundException($file);
         }
 
         $timestamp = @filemtime($file) ?: time();
@@ -43,7 +40,7 @@ class Helpers
     public static function hash(string $file): string
     {
         if (!file_exists($file)) {
-            throw FileNotFoundException::fromFile($file);
+            throw new FileNotFoundException($file);
         }
 
         $content = @file_get_contents($file);
