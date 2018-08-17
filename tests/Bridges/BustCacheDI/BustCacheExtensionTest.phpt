@@ -4,9 +4,9 @@ declare(strict_types = 1);
 namespace NepadaTests\Bridges\BustCacheDI;
 
 use Latte;
+use NepadaTests\TestCase;
 use Nette;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
-use Tester;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 /**
  * @testCase
  */
-class BustCacheExtensionTest extends Tester\TestCase
+class BustCacheExtensionTest extends TestCase
 {
 
     /** @var Nette\DI\Container */

@@ -5,11 +5,11 @@ namespace NepadaTests\BustCache;
 
 use Latte;
 use Nepada\BustCache\BustCacheMacro;
+use NepadaTests\TestCase;
 use Nette;
 use Tester\Assert;
-use Tester\TestCase;
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 
 /**

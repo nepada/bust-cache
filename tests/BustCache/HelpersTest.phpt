@@ -4,10 +4,10 @@ declare(strict_types = 1);
 namespace NepadaTests\BustCache;
 
 use Nepada;
+use NepadaTests\TestCase;
 use Tester\Assert;
-use Tester\TestCase;
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 
 /**
