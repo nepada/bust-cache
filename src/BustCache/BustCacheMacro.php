@@ -77,7 +77,7 @@ class BustCacheMacro implements Latte\IMacro
             throw new Latte\CompileException("Multiple arguments are not supported in {{$node->name}}.");
         }
 
-        $node->isEmpty = true;
+        $node->empty = true;
         $node->modifiers = '|safeurl|escape'; // auto-escape
 
         $writer = Latte\PhpWriter::using($node);

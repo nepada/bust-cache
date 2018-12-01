@@ -26,28 +26,28 @@ class BustCacheMacroTest extends TestCase
         $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, false));
 
         $node = $compiler->expandMacro('bustCache', '"/test.txt"');
-        Assert::true($node->isEmpty);
+        Assert::true($node->empty);
         Assert::match(
             '<?php echo %a%escape%a%\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', "'/test.txt'");
-        Assert::true($node->isEmpty);
+        Assert::true($node->empty);
         Assert::match(
             '<?php echo %a%escape%a%\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
-        Assert::true($node->isEmpty);
+        Assert::true($node->empty);
         Assert::match(
             '<?php echo %a%escape%a%\'/test.txt?a1d0c6e83f\') ?>',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
-        Assert::true($node->isEmpty);
+        Assert::true($node->empty);
         Assert::match(
             '#<\?php echo .*escape.*safeUrl.*\$file \. \'\?\' \. Nepada\\\\BustCache\\\\Helpers::hash\(\'' . preg_quote(self::FIXTURES_DIR, '#') . '\' . \$file\)\)\) \?>#i',
             $node->openingCode
@@ -60,14 +60,14 @@ class BustCacheMacroTest extends TestCase
         $compiler->addMacro('bustCache', new BustCacheMacro(self::FIXTURES_DIR, true));
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
-        Assert::true($node->isEmpty);
+        Assert::true($node->empty);
         Assert::match(
             '#<\?php echo .*escape.*safeUrl.*"/test\.txt" \. \'\?\' \. Nepada\\\\BustCache\\\\Helpers::timestamp\(\'' . preg_quote(self::FIXTURES_DIR, '#') . '\' . "/test\.txt"\)\)\) \?>#i',
             $node->openingCode
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
-        Assert::true($node->isEmpty);
+        Assert::true($node->empty);
         Assert::match(
             '#<\?php echo .*escape.*safeUrl.*\$file \. \'\?\' \. Nepada\\\\BustCache\\\\Helpers::timestamp\(\'' . preg_quote(self::FIXTURES_DIR, '#') . '\' . \$file\)\)\) \?>#i',
             $node->openingCode
