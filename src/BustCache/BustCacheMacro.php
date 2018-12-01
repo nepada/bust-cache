@@ -39,10 +39,9 @@ class BustCacheMacro implements Latte\IMacro
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      * @return mixed[]|null [prolog, epilog]
      */
-    public function finalize()
+    public function finalize(): ?array
     {
         return null;
     }
@@ -50,12 +49,11 @@ class BustCacheMacro implements Latte\IMacro
     /**
      * New node is found. Returns FALSE to reject.
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      * @param MacroNode $node
      * @return bool
      * @throws IOException
      */
-    public function nodeOpened(MacroNode $node)
+    public function nodeOpened(MacroNode $node): bool
     {
         if ($node->prefix !== '' && $node->prefix !== null) {
             return false;
