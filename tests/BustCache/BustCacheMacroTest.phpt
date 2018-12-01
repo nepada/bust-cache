@@ -6,7 +6,6 @@ namespace NepadaTests\BustCache;
 use Latte;
 use Nepada\BustCache\BustCacheMacro;
 use NepadaTests\TestCase;
-use Nette;
 use Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -82,7 +81,7 @@ class BustCacheMacroTest extends TestCase
         Assert::exception(
             function () use ($compiler): void {
                 // Set HtmlNode
-                $rc = Nette\Reflection\ClassType::from($compiler);
+                $rc = new \ReflectionClass($compiler);
                 $property = $rc->getProperty('htmlNode');
                 $property->setAccessible(true);
                 $property->setValue($compiler, new Latte\HtmlNode('div'));
