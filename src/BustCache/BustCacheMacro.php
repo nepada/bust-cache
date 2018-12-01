@@ -64,15 +64,15 @@ class BustCacheMacro implements Latte\IMacro
             throw new Latte\CompileException("Modifiers are not allowed in {{$node->name}}.");
         }
 
-        /** @var string|false $file */
+        /** @var string|false|null $file */
         $file = $node->tokenizer->fetchWord();
-        if ($file === false) {
+        if ($file === null || $file === false) { // `false` is BC with Nette 2.4
             throw new Latte\CompileException("Missing file name in {{$node->name}}.");
         }
 
-        /** @var string|false $word */
+        /** @var string|false|null $word */
         $word = $node->tokenizer->fetchWord();
-        if ($word !== false) {
+        if ($word !== null && $word !== false) { // `false` is BC with Nette 2.4
             throw new Latte\CompileException("Multiple arguments are not supported in {{$node->name}}.");
         }
 
