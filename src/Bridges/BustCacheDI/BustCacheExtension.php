@@ -7,7 +7,6 @@ use Latte;
 use Nepada\BustCache\BustCacheMacro;
 use Nette;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
-use Nette\DI\MissingServiceException;
 
 class BustCacheExtension extends Nette\DI\CompilerExtension
 {
@@ -32,15 +31,15 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
     public function beforeCompile(): void
     {
         $container = $this->getContainerBuilder();
-        try {
-            $latteFactory = $container->getDefinitionByType(ILatteFactory::class);
-            $latteFactory->addSetup(
-                '?->onCompile[] = function (' . Latte\Engine::class . ' $engine): void { $engine->addMacro("bustCache", new ' . BustCacheMacro::class . '(?, ?)); }',
-                ['@self', $this->wwwDir, $this->debugMode]
-            );
-        } catch (MissingServiceException $exception) {
-            // noop
+
+        $latteFactory = $container->getDefinitionByType(ILatteFactory::class);
+        if (method_exists($latteFactory, 'getResultDefinition')) { // BC with Nette 2.4
+            $latteFactory = $latteFactory->getResultDefinition();
         }
+        $latteFactory->addSetup(
+            '?->onCompile[] = function (' . Latte\Engine::class . ' $engine): void { $engine->addMacro("bustCache", new ' . BustCacheMacro::class . '(?, ?)); }',
+            ['@self', $this->wwwDir, $this->debugMode]
+        );
     }
 
 }
