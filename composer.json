@@ -20,6 +20,7 @@
     },
     "require-dev": {
         "nette/tester": "^2.1",
+        "xificurk/phpstan-shim": "^0.11",
         "nette/bootstrap": "^2.4@dev",
         "nette/di": "^2.4.7@dev",
         "nette/application": "^2.4@dev",

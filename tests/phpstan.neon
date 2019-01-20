@@ -6,8 +6,11 @@ includes:
 
 parameters:
     exceptionRules:
-        checkedExceptions:
-            - RuntimeException
-        ignoredExceptions:
+        uncheckedExceptions:
             - LogicException
             - Nette\InvalidStateException
+
+    ignoreErrors:
+        -
+            message: '#PHPDoc tag @throws with type Latte\\CompileException\|Nepada\\BustCache\\IOException is not compatible with parent#'
+            path: %currentWorkingDirectory%/src/BustCache/BustCacheMacro.php

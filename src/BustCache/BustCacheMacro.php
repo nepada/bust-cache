@@ -52,6 +52,7 @@ class BustCacheMacro implements Latte\IMacro
      * @param MacroNode $node
      * @return bool
      * @throws IOException
+     * @throws Latte\CompileException
      */
     public function nodeOpened(MacroNode $node): bool
     {
