@@ -34,7 +34,6 @@ class Helpers
     /**
      * @param string $file
      * @return string
-     * @throws FileNotFoundException
      * @throws IOException
      */
     public static function hash(string $file): string
