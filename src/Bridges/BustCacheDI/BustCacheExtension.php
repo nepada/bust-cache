@@ -23,9 +23,9 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
         $this->debugMode = $debugMode;
     }
 
-    public function loadConfiguration(): void
+    public function getConfigSchema(): Nette\Schema\Schema
     {
-        $this->validateConfig([]);
+        return Nette\Schema\Expect::array()->max(0.0);
     }
 
     public function beforeCompile(): void
