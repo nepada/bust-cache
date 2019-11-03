@@ -25,7 +25,7 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
 
     public function getConfigSchema(): Nette\Schema\Schema
     {
-        return Nette\Schema\Expect::array()->max(0.0);
+        return Nette\Schema\Expect::structure([]);
     }
 
     public function beforeCompile(): void
