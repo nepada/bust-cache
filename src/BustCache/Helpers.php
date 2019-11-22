@@ -22,7 +22,7 @@ class Helpers
      */
     public static function timestamp(string $file): string
     {
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             throw new FileNotFoundException($file);
         }
 
@@ -38,7 +38,7 @@ class Helpers
      */
     public static function hash(string $file): string
     {
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             throw new FileNotFoundException($file);
         }
 

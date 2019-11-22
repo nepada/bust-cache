@@ -28,7 +28,7 @@ class BustCacheMacro implements Latte\IMacro
     public function __construct(string $wwwDir, bool $debugMode = false)
     {
         $this->wwwDir = $wwwDir;
-        if (!is_dir($this->wwwDir)) {
+        if (! is_dir($this->wwwDir)) {
             throw new DirectoryNotFoundException($wwwDir);
         }
         $this->debugMode = $debugMode;
