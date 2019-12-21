@@ -14,11 +14,9 @@ class BustCacheMacro implements Latte\IMacro
 
     use Latte\Strict;
 
-    /** @var string */
-    private $wwwDir;
+    private string $wwwDir;
 
-    /** @var bool */
-    private $debugMode;
+    private bool $debugMode;
 
     /**
      * @param string $wwwDir

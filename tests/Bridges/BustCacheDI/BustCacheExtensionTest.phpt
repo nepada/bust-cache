@@ -18,8 +18,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 class BustCacheExtensionTest extends TestCase
 {
 
-    /** @var Nette\DI\Container */
-    private $container;
+    private Nette\DI\Container $container;
 
     protected function setUp(): void
     {

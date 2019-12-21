@@ -11,11 +11,9 @@ use Nette\Bridges\ApplicationLatte\ILatteFactory;
 class BustCacheExtension extends Nette\DI\CompilerExtension
 {
 
-    /** @var string */
-    private $wwwDir;
+    private string $wwwDir;
 
-    /** @var bool */
-    private $debugMode;
+    private bool $debugMode;
 
     public function __construct(string $wwwDir, bool $debugMode = false)
     {
