@@ -26,7 +26,10 @@ class Helpers
             throw new FileNotFoundException($file);
         }
 
-        $timestamp = @filemtime($file) ?: time();
+        $timestamp = @filemtime($file);
+        if ($timestamp === false) {
+            $timestamp = time();
+        }
 
         return (string) $timestamp;
     }
