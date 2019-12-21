@@ -28,28 +28,28 @@ class BustCacheMacroTest extends TestCase
         Assert::true($node->empty);
         Assert::same(
             '<?php echo LR\Filters::escapeHtmlText(\'/test.txt?a1d0c6e83f\') ?>',
-            $node->openingCode
+            $node->openingCode,
         );
 
         $node = $compiler->expandMacro('bustCache', "'/test.txt'");
         Assert::true($node->empty);
         Assert::same(
             '<?php echo LR\Filters::escapeHtmlText(\'/test.txt?a1d0c6e83f\') ?>',
-            $node->openingCode
+            $node->openingCode,
         );
 
         $node = $compiler->expandMacro('bustCache', '/test.txt');
         Assert::true($node->empty);
         Assert::same(
             '<?php echo LR\Filters::escapeHtmlText(\'/test.txt?a1d0c6e83f\') ?>',
-            $node->openingCode
+            $node->openingCode,
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->empty);
         Assert::same(
             '<?php echo LR\Filters::escapeHtmlText(LR\Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::hash(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
-            $node->openingCode
+            $node->openingCode,
         );
     }
 
@@ -62,14 +62,14 @@ class BustCacheMacroTest extends TestCase
         Assert::true($node->empty);
         Assert::same(
             '<?php echo LR\Filters::escapeHtmlText(LR\Filters::safeUrl("/test.txt" . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . "/test.txt"))) ?>',
-            $node->openingCode
+            $node->openingCode,
         );
 
         $node = $compiler->expandMacro('bustCache', '$file');
         Assert::true($node->empty);
         Assert::same(
             '<?php echo LR\Filters::escapeHtmlText(LR\Filters::safeUrl($file . \'?\' . Nepada\BustCache\Helpers::timestamp(\'' . self::FIXTURES_DIR . '\' . $file))) ?>',
-            $node->openingCode
+            $node->openingCode,
         );
     }
 
@@ -89,7 +89,7 @@ class BustCacheMacroTest extends TestCase
                 $compiler->expandMacro('bustCache', 'test', null, Latte\MacroNode::PREFIX_NONE);
             },
             Latte\CompileException::class,
-            'Unknown %a?%attribute n:%a?%bustCache'
+            'Unknown %a?%attribute n:%a?%bustCache',
         );
 
         Assert::exception(
@@ -97,7 +97,7 @@ class BustCacheMacroTest extends TestCase
                 $compiler->expandMacro('bustCache', 'test', '|modify');
             },
             Latte\CompileException::class,
-            'Modifiers are not allowed in {bustCache}.'
+            'Modifiers are not allowed in {bustCache}.',
         );
 
         Assert::exception(
@@ -105,7 +105,7 @@ class BustCacheMacroTest extends TestCase
                 $compiler->expandMacro('bustCache', '');
             },
             Latte\CompileException::class,
-            'Missing file name in {bustCache}.'
+            'Missing file name in {bustCache}.',
         );
 
         Assert::exception(
@@ -113,7 +113,7 @@ class BustCacheMacroTest extends TestCase
                 $compiler->expandMacro('bustCache', 'multi, word');
             },
             Latte\CompileException::class,
-            'Multiple arguments are not supported in {bustCache}.'
+            'Multiple arguments are not supported in {bustCache}.',
         );
     }
 

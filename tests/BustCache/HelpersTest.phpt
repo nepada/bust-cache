@@ -28,7 +28,7 @@ class HelpersTest extends TestCase
                 Nepada\BustCache\Helpers::timestamp('nonExistent');
             },
             Nepada\BustCache\FileNotFoundException::class,
-            'Unable to read file \'nonExistent\' - the file does not exist or is not readable.'
+            'Unable to read file \'nonExistent\' - the file does not exist or is not readable.',
         );
 
         Assert::exception(
@@ -36,7 +36,7 @@ class HelpersTest extends TestCase
                 Nepada\BustCache\Helpers::hash('nonExistent');
             },
             Nepada\BustCache\FileNotFoundException::class,
-            'Unable to read file \'nonExistent\' - the file does not exist or is not readable.'
+            'Unable to read file \'nonExistent\' - the file does not exist or is not readable.',
         );
     }
 

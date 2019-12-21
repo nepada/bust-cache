@@ -34,7 +34,7 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
         assert($latteFactory instanceof Nette\DI\Definitions\FactoryDefinition);
         $latteFactory->getResultDefinition()->addSetup(
             '?->onCompile[] = function (' . Latte\Engine::class . ' $engine): void { $engine->addMacro("bustCache", new ' . BustCacheMacro::class . '(?, ?)); }',
-            ['@self', $this->wwwDir, $this->debugMode]
+            ['@self', $this->wwwDir, $this->debugMode],
         );
     }
 

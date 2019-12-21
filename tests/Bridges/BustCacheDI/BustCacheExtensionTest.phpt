@@ -37,7 +37,7 @@ class BustCacheExtensionTest extends TestCase
         Assert::noError(
             function () use ($latte): void {
                 $latte->compile('{bustCache test}');
-            }
+            },
         );
     }
 
