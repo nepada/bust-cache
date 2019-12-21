@@ -33,7 +33,6 @@ class BustCacheExtensionTest extends TestCase
 
     public function testContainer(): void
     {
-        /** @var Latte\Engine $latte */
         $latte = $this->container->getByType(ILatteFactory::class)->create();
         $latte->setLoader(new Latte\Loaders\StringLoader());
         Assert::noError(
