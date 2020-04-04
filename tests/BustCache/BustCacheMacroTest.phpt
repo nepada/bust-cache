@@ -86,7 +86,7 @@ class BustCacheMacroTest extends TestCase
                 $property->setAccessible(true);
                 $property->setValue($compiler, new Latte\HtmlNode('div'));
 
-                $compiler->expandMacro('bustCache', 'test', null, Latte\MacroNode::PREFIX_NONE);
+                $compiler->expandMacro('bustCache', 'test', '', Latte\MacroNode::PREFIX_NONE);
             },
             Latte\CompileException::class,
             'Unknown %a?%attribute n:%a?%bustCache',
