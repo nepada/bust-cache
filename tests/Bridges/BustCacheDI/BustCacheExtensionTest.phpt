@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace NepadaTests\Bridges\BustCacheDI;
 
 use Latte;
+use NepadaTests\Environment;
 use NepadaTests\TestCase;
 use Nette;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
@@ -23,7 +24,7 @@ class BustCacheExtensionTest extends TestCase
     protected function setUp(): void
     {
         $configurator = new Nette\Configurator();
-        $configurator->setTempDirectory(TEMP_DIR);
+        $configurator->setTempDirectory(Environment::getTempDir());
         $configurator->setDebugMode(true);
         $configurator->addParameters(['wwwDir' => __DIR__ . '/../../fixtures']);
         $configurator->addConfig(__DIR__ . '/../../fixtures/config.neon');
