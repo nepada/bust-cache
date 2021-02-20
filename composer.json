@@ -19,7 +19,7 @@
         "latte/latte": "^2.5@dev"
     },
     "require-dev": {
-        "nette/tester": "^2.3.4",
+        "nette/tester": "^2.3.5",
         "phpstan/phpstan": "^0.12.55",
         "phpstan/phpstan-strict-rules": "^0.12.5",
         "pepakriz/phpstan-exception-rules": "^0.11.2",
