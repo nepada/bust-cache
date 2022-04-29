@@ -73,7 +73,7 @@ class BustCacheMacro implements Latte\IMacro
         }
 
         $node->empty = true;
-        $node->modifiers = '|checkurl|escape'; // auto-escape
+        $node->modifiers = '|checkUrl|escape'; // auto-escape
 
         $writer = Latte\PhpWriter::using($node);
 
