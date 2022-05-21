@@ -4,10 +4,13 @@ declare(strict_types = 1);
 namespace NepadaTests\Bridges\BustCacheDI;
 
 use Latte;
+use Nepada\BustCache\CacheBustingStrategies\ContentHash;
+use Nepada\BustCache\CacheBustingStrategies\ModificationTime;
+use Nepada\BustCache\CacheBustingStrategy;
 use NepadaTests\Environment;
 use NepadaTests\TestCase;
 use Nette;
-use Nette\Bridges\ApplicationLatte\ILatteFactory;
+use Nette\Bridges\ApplicationLatte\LatteFactory;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -19,25 +22,37 @@ require_once __DIR__ . '/../../bootstrap.php';
 class BustCacheExtensionTest extends TestCase
 {
 
-    private Nette\DI\Container $container;
+    public function testDebugMode(): void
+    {
+        $container = $this->createContainer(true);
+        Assert::type(ModificationTime::class, $container->getByType(CacheBustingStrategy::class));
+        $this->assertCanRenderBustCacheTag($container);
+    }
 
-    protected function setUp(): void
+    public function testProductionMode(): void
+    {
+        $container = $this->createContainer(false);
+        Assert::type(ContentHash::class, $container->getByType(CacheBustingStrategy::class));
+        $this->assertCanRenderBustCacheTag($container);
+    }
+
+    private function createContainer(bool $debugMode): Nette\DI\Container
     {
         $configurator = new Nette\Configurator();
         $configurator->setTempDirectory(Environment::getTempDir());
-        $configurator->setDebugMode(true);
+        $configurator->setDebugMode($debugMode);
         $configurator->addParameters(['wwwDir' => __DIR__ . '/../../fixtures']);
         $configurator->addConfig(__DIR__ . '/../../fixtures/config.neon');
-        $this->container = $configurator->createContainer();
+        return $configurator->createContainer();
     }
 
-    public function testContainer(): void
+    private function assertCanRenderBustCacheTag(Nette\DI\Container $container): void
     {
-        $latte = $this->container->getByType(ILatteFactory::class)->create();
+        $latte = $container->getByType(LatteFactory::class)->create();
         $latte->setLoader(new Latte\Loaders\StringLoader());
         Assert::noError(
             function () use ($latte): void {
-                $latte->compile('{bustCache test}');
+                $latte->compile('{bustCache test.txt}');
             },
         );
     }

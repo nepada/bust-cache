@@ -1,5 +1,5 @@
-Bust Cache Macro
-================
+Bust Cache Latte Tag
+====================
 
 [![Build Status](https://github.com/nepada/bust-cache/workflows/CI/badge.svg)](https://github.com/nepada/bust-cache/actions?query=workflow%3ACI+branch%3Amaster)
 [![Coverage Status](https://coveralls.io/repos/github/nepada/bust-cache/badge.svg?branch=master)](https://coveralls.io/github/nepada/bust-cache?branch=master)
@@ -20,12 +20,20 @@ Register the extension in `config.neon`:
 
 ```yaml
 extensions:
-    - Nepada\Bridges\BustCacheDI\BustCacheExtension(%wwwDir%, %debugMode%)
+    bustCache: Nepada\Bridges\BustCacheDI\BustCacheExtension(%wwwDir%, %debugMode%)
+
+# default config
+bustCache:
+  strategy: contentHash # modificationTime in debugMode
 ```
 
 If you're using stand-alone Latte, install the macro manually:
+
 ```php
-$latte->addMacro('bustCache', new Nepada\BustCache\BustCacheMacro($wwwDir, $debugMode));
+$fileSystem = Nepada\BustCache\LocalFileSystem::forDirectory($wwwDir);
+$strategy = new Nepada\BustCache\CacheBustingStrategies\ContentHash(); // or other
+$pathProcessor = new Nepada\BustCache\BustCachePathProcessor($fileSystem, $strategy);
+$latte->addExtension(new Nepada\Bridges\BustCacheLatte\BustCacheLatteExtension($pathProcessor));
 ```
 
 
@@ -38,17 +46,12 @@ Example:
 <link rel="stylesheet" href="{bustCache /css/style.css}">
 ```
 
-In debug mode the macro busts cache by appending timestamp of last file modification:
+The resulting path depends on the (auto-)chosen cache busting strategy:
 
 ```latte
+<!-- modificationTime: timestamp of last file modification -->
 <link rel="stylesheet" href="/css/style.css?1449177985">
+
+<!-- contentHash:  first 10 letters of md5 hash of the file content -->
+<link rel="stylesheet" href="/css/style.css?a1d0c6e83a">
 ```
-
-In production mode the macro busts cache by appending first 10 letters of md5 hash of the file content:
-
-```latte
-<link rel="stylesheet" href="/css/style.css?a1d0c6e83f">
-```
-
-
-**Note:** It is not recommended (but supported) to pass variables into the macro, because they need to be resolved in run-time and thus the file is read on every request.
