@@ -2,7 +2,7 @@
     "name": "nepada/bust-cache",
     "type": "library",
     "license": "BSD-3-Clause",
-    "description": "Cache busting macro for Latte.",
+    "description": "Cache busting Latte tag.",
     "keywords": ["latte", "bust", "cache", "nette"],
     "support": {
         "email": "petr@pada.cz",
@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": ">=8.0.0 <8.2",
-        "latte/latte": "^2.7@dev"
+        "latte/latte": "^3.0.1@dev"
     },
     "require-dev": {
         "nette/tester": "2.4.2",
@@ -30,7 +30,7 @@
         "nepada/coding-standard": "7.4.3",
         "nette/di": "^3.0.6@dev",
         "nette/schema": "^1.0.3@dev",
-        "nette/application": "^3.1.4@dev",
+        "nette/application": "^3.1.6@dev",
         "nette/bootstrap": ">=3.0@dev",
         "nette/component-model": ">=3.0.2"
     },
@@ -41,10 +41,7 @@
         "psr-4": {
             "Nepada\\Bridges\\": "src/Bridges/",
             "Nepada\\BustCache\\": "src/BustCache/"
-        },
-        "classmap": [
-            "src/BustCache/exceptions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

@@ -1,5 +1,5 @@
 extensions:
-    bustCache: Nepada\Bridges\BustCacheDI\BustCacheExtension('%wwwDir%', true)
+    bustCache: Nepada\Bridges\BustCacheDI\BustCacheExtension(%wwwDir%, %debugMode%)
 
 application:
     scanDirs: false
