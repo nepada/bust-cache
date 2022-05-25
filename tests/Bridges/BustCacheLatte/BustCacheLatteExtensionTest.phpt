@@ -7,6 +7,7 @@ use Latte;
 use Nepada\Bridges\BustCacheLatte\BustCacheLatteExtension;
 use Nepada\BustCache\BustCachePathProcessor;
 use Nepada\BustCache\CacheBustingStrategies\ContentHash;
+use Nepada\BustCache\Caching\NullCache;
 use Nepada\BustCache\FileSystem\LocalFileSystem;
 use NepadaTests\TestCase;
 use Nette\Utils\Strings;
@@ -27,10 +28,11 @@ class BustCacheLatteExtensionTest extends TestCase
      * @dataProvider provideLatteTagData
      * @param string $latteString
      * @param string $expectedCompiledCode
+     * @param bool $autoRefresh
      */
-    public function testLatteTag(string $latteString, string $expectedCompiledCode): void
+    public function testLatteTag(string $latteString, string $expectedCompiledCode, bool $autoRefresh): void
     {
-        $latte = $this->createLatte();
+        $latte = $this->createLatte($autoRefresh);
         $actualCode = $this->normalizeCode($latte->compile($latteString));
         Assert::contains($expectedCompiledCode, $actualCode);
     }
@@ -40,25 +42,45 @@ class BustCacheLatteExtensionTest extends TestCase
      */
     protected function provideLatteTagData(): \Generator
     {
-        yield 'literal file' => [
+        yield 'file literal, enabled auto refresh' => [
+            'autoRefresh' => true,
             'latteString' => '<script src="{bustCache /test.txt}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor(\'/test.txt\')) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 1 */;',
         ];
 
-        yield 'dynamic file' => [
+        yield 'file literal, disabled auto refresh' => [
+            'autoRefresh' => false,
+            'latteString' => '<script src="{bustCache /test.txt}"></script>',
+            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
+        ];
+
+        yield 'dynamic file literal, disabled auto refresh' => [
+            'autoRefresh' => false,
+            'latteString' => '<script src="{bustCache dynamic /test.txt}"></script>',
+            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 1 */;',
+        ];
+
+        yield 'file expression, enabled auto refresh' => [
+            'autoRefresh' => true,
             'latteString' => '<script src="{bustCache $file}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor($file)) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, true)) /* line 1 */;',
+        ];
+
+        yield 'file expression, disabled auto refresh' => [
+            'autoRefresh' => false,
+            'latteString' => '<script src="{bustCache $file}"></script>',
+            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false)) /* line 1 */;',
         ];
     }
 
-    private function createLatte(): Latte\Engine
+    private function createLatte(bool $autoRefresh): Latte\Engine
     {
         $fileSystem = LocalFileSystem::forDirectory(self::FIXTURES_DIR);
         $strategy = new ContentHash();
-        $bustCachePathProcessor = new BustCachePathProcessor($fileSystem, $strategy);
+        $bustCachePathProcessor = new BustCachePathProcessor($fileSystem, new NullCache(), $strategy);
         $latte = new Latte\Engine();
         $latte->setLoader(new Latte\Loaders\StringLoader());
-        $latte->addExtension(new BustCacheLatteExtension($bustCachePathProcessor));
+        $latte->addExtension(new BustCacheLatteExtension($bustCachePathProcessor, $autoRefresh));
         return $latte;
     }
 
