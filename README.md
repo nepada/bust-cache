@@ -47,7 +47,7 @@ $latte->addExtension(new Nepada\Bridges\BustCacheLatte\BustCacheLatteExtension($
 Usage
 -----
 
-Example:
+Basic example:
 
 ```latte
 <link rel="stylesheet" href="{bustCache /css/style.css}">
@@ -64,6 +64,18 @@ The resulting path depends on the (auto-)chosen cache busting strategy:
 
 <!-- using query cache busting with contentHash strategy: first 10 letters of md5 hash of the file content -->
 <link rel="stylesheet" href="/css/style.css?a1d0c6e83a">
+```
+
+Usage in application with non-trivial base path:
+
+```latte
+<link rel="stylesheet" href="{$basePath}{bustCache /css/style.css}">
+```
+
+Generating full absolute URL:
+
+```latte
+<link rel="stylesheet" href="{$baseUrl}{bustCache /css/style.css}">
 ```
 
 
