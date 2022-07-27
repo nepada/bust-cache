@@ -1,0 +1,6 @@
+{
+    "manifest.js": "manifest.json",
+    "assets/manifest.js": "assets/manifest.json",
+    "revision-in-subdir.js": "assets/js/app-rev.js",
+    "asset-revision-is-missing.js": "not-found.json"
+}

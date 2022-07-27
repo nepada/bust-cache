@@ -10,6 +10,10 @@ use Nepada\BustCache\CacheBustingStrategy;
 use Nepada\BustCache\Caching\Cache;
 use Nepada\BustCache\Caching\NetteCache;
 use Nepada\BustCache\Caching\NullCache;
+use Nepada\BustCache\Manifest\AutodetectManifestFinder;
+use Nepada\BustCache\Manifest\ManifestFinder;
+use Nepada\BustCache\Manifest\NullManifestFinder;
+use Nepada\BustCache\Manifest\StaticManifestFinder;
 use NepadaTests\Environment;
 use NepadaTests\TestCase;
 use Nette;
@@ -25,7 +29,9 @@ require_once __DIR__ . '/../../bootstrap.php';
 class BustCacheExtensionTest extends TestCase
 {
 
-    private const TEST_TEMPLATE = "<script src=\"{bustCache /test.txt}\"></script>\n<link href=\"{bustCache dynamic /test.txt}\">\n<link rel=\"stylesheet\" href=\"{bustCache \$file}\">";
+    private const BASIC_TEMPLATE = "<script src=\"{bustCache /test.txt}\"></script>\n<link href=\"{bustCache dynamic /test.txt}\">\n<link rel=\"stylesheet\" href=\"{bustCache \$file}\">";
+
+    private const MANIFEST_TEMPLATE = '<pre>{bustCache /test-revision.txt}</pre>';
 
     public function testNoCache(): void
     {
@@ -35,7 +41,7 @@ class BustCacheExtensionTest extends TestCase
         Assert::type(NullCache::class, $container->getByType(Cache::class));
         $latte = $this->createLatte($container);
 
-        $compiledCode = $latte->compile(self::TEST_TEMPLATE);
+        $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
             'echo LR\Filters::escapeHtmlAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
             $compiledCode,
@@ -49,10 +55,41 @@ class BustCacheExtensionTest extends TestCase
             $compiledCode,
         );
 
-        $renderedCode = $latte->renderToString(self::TEST_TEMPLATE, ['file' => '/test.txt']);
+        $renderedCode = $latte->renderToString(self::BASIC_TEMPLATE, ['file' => '/test.txt']);
         Assert::contains('<script src="/test.txt?a1d0c6e83f"></script>', $renderedCode);
         Assert::contains('<link href="/test.txt?a1d0c6e83f">', $renderedCode);
         Assert::contains('<link rel="stylesheet" href="/test.txt?a1d0c6e83f">', $renderedCode);
+    }
+
+    public function testAutodetectManifest(): void
+    {
+        $configurator = $this->createConfigurator(false);
+        $container = $configurator->createContainer();
+        Assert::type(AutodetectManifestFinder::class, $container->getByType(ManifestFinder::class));
+        $latte = $this->createLatte($container);
+
+        $renderedCode = $latte->renderToString(self::MANIFEST_TEMPLATE);
+        Assert::contains('<pre>/manifest.json</pre>', $renderedCode);
+    }
+
+    public function testStaticManifest(): void
+    {
+        $configurator = $this->createConfigurator(false);
+        $configurator->addConfig(__DIR__ . '/../../fixtures/custom-manifest.neon');
+        $container = $configurator->createContainer();
+        Assert::type(StaticManifestFinder::class, $container->getByType(ManifestFinder::class));
+        $latte = $this->createLatte($container);
+
+        $renderedCode = $latte->renderToString(self::MANIFEST_TEMPLATE);
+        Assert::contains('<pre>/custom-manifest.json</pre>', $renderedCode);
+    }
+
+    public function testManifestDisabled(): void
+    {
+        $configurator = $this->createConfigurator(false);
+        $configurator->addConfig(__DIR__ . '/../../fixtures/no-manifest.neon');
+        $container = $configurator->createContainer();
+        Assert::type(NullManifestFinder::class, $container->getByType(ManifestFinder::class));
     }
 
     public function testDebugMode(): void
@@ -62,7 +99,7 @@ class BustCacheExtensionTest extends TestCase
         Assert::type(NetteCache::class, $container->getByType(Cache::class));
         $latte = $this->createLatte($container);
 
-        $compiledCode = $latte->compile(self::TEST_TEMPLATE);
+        $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
             'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 1 */;',
             $compiledCode,
@@ -76,7 +113,7 @@ class BustCacheExtensionTest extends TestCase
             $compiledCode,
         );
 
-        $renderedCode = $latte->renderToString(self::TEST_TEMPLATE, ['file' => '/test.txt']);
+        $renderedCode = $latte->renderToString(self::BASIC_TEMPLATE, ['file' => '/test.txt']);
         Assert::match('%A?%<script src="/test.txt?%d%"></script>%A?%', $renderedCode);
         Assert::match('%A?%<link href="/test.txt?%d%">%A?%', $renderedCode);
         Assert::match('%A?%<link rel="stylesheet" href="/test.txt?%d%">%A?%', $renderedCode);
@@ -89,7 +126,7 @@ class BustCacheExtensionTest extends TestCase
         Assert::type(NetteCache::class, $container->getByType(Cache::class));
         $latte = $this->createLatte($container);
 
-        $compiledCode = $latte->compile(self::TEST_TEMPLATE);
+        $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
             'echo LR\Filters::escapeHtmlAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
             $compiledCode,
@@ -103,7 +140,7 @@ class BustCacheExtensionTest extends TestCase
             $compiledCode,
         );
 
-        $renderedCode = $latte->renderToString(self::TEST_TEMPLATE, ['file' => '/test.txt']);
+        $renderedCode = $latte->renderToString(self::BASIC_TEMPLATE, ['file' => '/test.txt']);
         Assert::contains('<script src="/test.txt?a1d0c6e83f"></script>', $renderedCode);
         Assert::contains('<link href="/test.txt?a1d0c6e83f">', $renderedCode);
         Assert::contains('<link rel="stylesheet" href="/test.txt?a1d0c6e83f">', $renderedCode);

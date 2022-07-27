@@ -1,0 +1,4 @@
+{
+    "manifest.js": "manifest.json",
+    "js/app.js": "js/app-rev.js"
+}

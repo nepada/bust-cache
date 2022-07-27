@@ -13,6 +13,12 @@ use Nepada\BustCache\Caching\NetteCache;
 use Nepada\BustCache\Caching\NullCache;
 use Nepada\BustCache\FileSystem\FileSystem;
 use Nepada\BustCache\FileSystem\LocalFileSystem;
+use Nepada\BustCache\Manifest\AutodetectManifestFinder;
+use Nepada\BustCache\Manifest\DefaultRevisionFinder;
+use Nepada\BustCache\Manifest\ManifestFinder;
+use Nepada\BustCache\Manifest\NullManifestFinder;
+use Nepada\BustCache\Manifest\RevisionFinder;
+use Nepada\BustCache\Manifest\StaticManifestFinder;
 use Nette;
 use Nette\Bridges\ApplicationDI\LatteExtension;
 use Nette\DI\Definitions\Statement;
@@ -45,6 +51,8 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
             'strategy' => Expect::anyOf(array_keys(self::CACHE_BUSTING_STRATEGIES))
                 ->default($this->debugMode ? ModificationTime::NAME : ContentHash::NAME),
             'autoRefresh' => Expect::bool($this->debugMode),
+            'manifest' => Expect::anyOf(Expect::bool(), Expect::string())
+                ->default(true),
         ]);
     }
 
@@ -55,6 +63,20 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
         $container->addDefinition($this->prefix('fileSystem'))
             ->setType(FileSystem::class)
             ->setFactory([LocalFileSystem::class, 'forDirectory'], [$this->wwwDir]);
+
+        $manifestFinder = $container->addDefinition($this->prefix('manifestFinder'))
+            ->setType(ManifestFinder::class);
+        if ($this->config->manifest === true) {
+            $manifestFinder->setFactory(AutodetectManifestFinder::class);
+        } elseif ($this->config->manifest === false) {
+            $manifestFinder->setFactory(NullManifestFinder::class);
+        } else {
+            $manifestFinder->setFactory([StaticManifestFinder::class, 'forFilePath'], ['manifestFilePath' => $this->config->manifest]);
+        }
+
+        $container->addDefinition($this->prefix('revisionFinder'))
+            ->setType(RevisionFinder::class)
+            ->setFactory(DefaultRevisionFinder::class);
 
         $container->addDefinition($this->prefix('cacheBustingStrategy'))
             ->setType(CacheBustingStrategy::class)

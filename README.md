@@ -28,15 +28,18 @@ Overview of available configuration options with their default values:
 bustCache:
   strategy: contentHash # modificationTime in debugMode
   autoRefresh: %debugMode%
+  manifest: true
 ```
 
 If you're using stand-alone Latte, install the Latte extension manually:
 
 ```php
 $fileSystem = Nepada\BustCache\LocalFileSystem::forDirectory($wwwDir);
+$manifestFinder = new Nepada\BustCache\Manifest\AutodetectManifestFinder($fileSystem);
+$revisionFinder = new Nepada\BustCache\Manifest\DefaultRevisionFinder($fileSystem, $manifestFinder);
 $cache = new Nepada\BustCache\Caching\NullCache(); // or other implementation of Cache
 $strategy = new Nepada\BustCache\CacheBustingStrategies\ContentHash(); // or other strategy
-$pathProcessor = new Nepada\BustCache\BustCachePathProcessor($fileSystem, $cache, $strategy);
+$pathProcessor = new Nepada\BustCache\BustCachePathProcessor($fileSystem, $cache, $revisionFinder, $strategy);
 $latte->addExtension(new Nepada\Bridges\BustCacheLatte\BustCacheLatteExtension($pathProcessor, $autoRefresh));
 ```
 
@@ -53,12 +56,37 @@ Example:
 The resulting path depends on the (auto-)chosen cache busting strategy:
 
 ```latte
-<!-- modificationTime: timestamp of the last file modification -->
+<!-- using path from revision manifest -->
+<link rel="stylesheet" href="/css/style-30cc681d44.css">
+
+<!-- using query cache busting with modificationTime strategy: timestamp of the last file modification -->
 <link rel="stylesheet" href="/css/style.css?1449177985">
 
-<!-- contentHash:  first 10 letters of md5 hash of the file content -->
+<!-- using query cache busting with contentHash strategy: first 10 letters of md5 hash of the file content -->
 <link rel="stylesheet" href="/css/style.css?a1d0c6e83a">
 ```
+
+
+### Revision manifest support
+
+Revision manifest is a JSON file that contains mapping between original asset path and its revision path.
+
+Example:
+```json
+{
+    "css/style.css": "css/style-30cc681d44.css",
+    "js/app.js": "js/app-68130ccd44.js"
+}
+```
+
+
+#### Configuration
+
+With default configuration the path of manifest file is auto-detected by traversing up from asset directory and looking for `manifest.json` or `rev-manifest.json`. If a manifest file is found, the contained revision mapping is used instead of cache busting using query parameter.
+
+You can completely disable the revision manifest support by setting `manifest: false` in your config.
+
+You can also bypass the auto-detection and specify the manifest file path statically, e.g. `manifest: "assets/my-manifest.json"`
 
 
 ### Caching

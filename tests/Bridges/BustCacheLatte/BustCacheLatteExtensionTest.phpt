@@ -9,6 +9,8 @@ use Nepada\BustCache\BustCachePathProcessor;
 use Nepada\BustCache\CacheBustingStrategies\ContentHash;
 use Nepada\BustCache\Caching\NullCache;
 use Nepada\BustCache\FileSystem\LocalFileSystem;
+use Nepada\BustCache\Manifest\DefaultRevisionFinder;
+use Nepada\BustCache\Manifest\NullManifestFinder;
 use NepadaTests\TestCase;
 use Nette\Utils\Strings;
 use Tester\Assert;
@@ -77,7 +79,8 @@ class BustCacheLatteExtensionTest extends TestCase
     {
         $fileSystem = LocalFileSystem::forDirectory(self::FIXTURES_DIR);
         $strategy = new ContentHash();
-        $bustCachePathProcessor = new BustCachePathProcessor($fileSystem, new NullCache(), $strategy);
+        $revisionFinder = new DefaultRevisionFinder($fileSystem, new NullManifestFinder());
+        $bustCachePathProcessor = new BustCachePathProcessor($fileSystem, new NullCache(), $revisionFinder, $strategy);
         $latte = new Latte\Engine();
         $latte->setLoader(new Latte\Loaders\StringLoader());
         $latte->addExtension(new BustCacheLatteExtension($bustCachePathProcessor, $autoRefresh));
