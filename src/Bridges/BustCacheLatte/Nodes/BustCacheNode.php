@@ -12,6 +12,7 @@ use Latte\Compiler\Tag;
 use Nepada\BustCache\BustCachePathProcessor;
 use Nepada\BustCache\FileSystem\FileNotFoundException;
 use Nepada\BustCache\FileSystem\IOException;
+use Nepada\BustCache\Manifest\InvalidManifestException;
 
 /**
  * {bustCache $file}
@@ -47,6 +48,7 @@ final class BustCacheNode extends StatementNode
      * @param PrintContext $context
      * @return string
      * @throws IOException
+     * @throws InvalidManifestException
      * @throws FileNotFoundException
      */
     public function print(PrintContext $context): string
