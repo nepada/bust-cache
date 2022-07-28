@@ -10,6 +10,7 @@ use Nepada\BustCache\CacheBustingStrategy;
 use Nepada\BustCache\Caching\Cache;
 use Nepada\BustCache\Caching\NetteCache;
 use Nepada\BustCache\Caching\NullCache;
+use Nepada\BustCache\FileSystem\FileNotFoundException;
 use Nepada\BustCache\Manifest\AutodetectManifestFinder;
 use Nepada\BustCache\Manifest\ManifestFinder;
 use Nepada\BustCache\Manifest\NullManifestFinder;
@@ -33,6 +34,8 @@ class BustCacheExtensionTest extends TestCase
 
     private const MANIFEST_TEMPLATE = '<pre>{bustCache /test-revision.txt}</pre>';
 
+    private const STRICT_MODE_TEMPLATE = '<link href="{bustCache /does-not-exist.txt}">';
+
     public function testNoCache(): void
     {
         $configurator = $this->createConfigurator(false);
@@ -47,11 +50,11 @@ class BustCacheExtensionTest extends TestCase
             $compiledCode,
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 2 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
             $compiledCode,
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false)) /* line 3 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 3 */;',
             $compiledCode,
         );
 
@@ -92,6 +95,46 @@ class BustCacheExtensionTest extends TestCase
         Assert::type(NullManifestFinder::class, $container->getByType(ManifestFinder::class));
     }
 
+    public function testMissingFileInStrictMode(): void
+    {
+        $configurator = $this->createConfigurator(false);
+        $configurator->addConfig(__DIR__ . '/../../fixtures/strict-mode.neon');
+        $container = $configurator->createContainer();
+        $latte = $this->createLatte($container);
+
+        $compiledCode = $latte->compile(self::STRICT_MODE_TEMPLATE);
+        Assert::contains(
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/does-not-exist.txt\', true, false)) /* line 1 */;',
+            $compiledCode,
+        );
+
+        Assert::exception(
+            fn () => $latte->renderToString(self::STRICT_MODE_TEMPLATE),
+            FileNotFoundException::class,
+        );
+    }
+
+    public function testMissingFileWithoutStrictMode(): void
+    {
+        $configurator = $this->createConfigurator(false);
+        $container = $configurator->createContainer();
+        $latte = $this->createLatte($container);
+
+        $compiledCode = $latte->compile(self::STRICT_MODE_TEMPLATE);
+        Assert::contains(
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/does-not-exist.txt\', false, false)) /* line 1 */;',
+            $compiledCode,
+        );
+
+        Assert::error(
+            fn () => $latte->renderToString(self::STRICT_MODE_TEMPLATE),
+            E_USER_WARNING,
+        );
+
+        $renderedCode = @$latte->renderToString(self::STRICT_MODE_TEMPLATE);
+        Assert::contains('<link href="#">', $renderedCode);
+    }
+
     public function testDebugMode(): void
     {
         $container = $this->createConfigurator(true)->createContainer();
@@ -101,15 +144,15 @@ class BustCacheExtensionTest extends TestCase
 
         $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 1 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
             $compiledCode,
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 2 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
             $compiledCode,
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, true)) /* line 3 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, true)) /* line 3 */;',
             $compiledCode,
         );
 
@@ -132,11 +175,11 @@ class BustCacheExtensionTest extends TestCase
             $compiledCode,
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', true)) /* line 2 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
             $compiledCode,
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false)) /* line 3 */;',
+            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 3 */;',
             $compiledCode,
         );
 

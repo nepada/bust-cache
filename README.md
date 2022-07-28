@@ -29,6 +29,7 @@ bustCache:
   strategy: contentHash # modificationTime in debugMode
   autoRefresh: %debugMode%
   manifest: true
+  strictMode: false
 ```
 
 If you're using stand-alone Latte, install the Latte extension manually:
@@ -40,7 +41,7 @@ $revisionFinder = new Nepada\BustCache\Manifest\DefaultRevisionFinder($fileSyste
 $cache = new Nepada\BustCache\Caching\NullCache(); // or other implementation of Cache
 $strategy = new Nepada\BustCache\CacheBustingStrategies\ContentHash(); // or other strategy
 $pathProcessor = new Nepada\BustCache\BustCachePathProcessor($fileSystem, $cache, $revisionFinder, $strategy);
-$latte->addExtension(new Nepada\Bridges\BustCacheLatte\BustCacheLatteExtension($pathProcessor, $autoRefresh));
+$latte->addExtension(new Nepada\Bridges\BustCacheLatte\BustCacheLatteExtension($pathProcessor, $strictMode, $autoRefresh));
 ```
 
 
@@ -124,3 +125,13 @@ If you want to use cache busting on files that are expected to be modified in ap
 ```latte
 <link rel="stylesheet" href="{bustCache dynamic /css/theme.css}">
 ```
+
+
+### Handling of missing manifest or asset files
+
+With default configuration, when a missing file (manifest or asset) is encountered a warning triggered and asset dummy path is generated. You can switch to `strictMode: true` to fail hard by throwing exception instead.
+
+"Missing file" is one of the following cases:
+- the static manifest file specified in configuration does not exist
+- a manifest file points to a revision path that does not exist
+- using cache busting by query parameter with asset path that does not exist
