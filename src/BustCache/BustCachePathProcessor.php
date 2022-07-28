@@ -32,18 +32,27 @@ final class BustCachePathProcessor
 
     /**
      * @param string $path
+     * @param bool $strictMode
      * @param bool $autoRefreshCache
      * @return string
+     * @throws FileNotFoundException
      * @throws IOException
      * @throws InvalidManifestException
-     * @throws FileNotFoundException
      */
-    public function __invoke(string $path, bool $autoRefreshCache): string
+    public function __invoke(string $path, bool $strictMode, bool $autoRefreshCache): string
     {
         $assetPath = Path::of($path);
-        return $this->loadFromCache($assetPath, $autoRefreshCache)
-            ?? $this->bustCacheUsingRevisionManifest($assetPath)
-            ?? $this->bustCacheUsingQueryParameter($assetPath);
+        try {
+            return $this->loadFromCache($assetPath, $autoRefreshCache)
+                ?? $this->bustCacheUsingRevisionManifest($assetPath)
+                ?? $this->bustCacheUsingQueryParameter($assetPath);
+        } catch (FileNotFoundException $exception) {
+            if ($strictMode) {
+                throw $exception;
+            }
+            trigger_error($exception->getMessage(), E_USER_WARNING);
+            return '#';
+        }
     }
 
     private function loadFromCache(Path $assetPath, bool $checkFileDependencies): ?string

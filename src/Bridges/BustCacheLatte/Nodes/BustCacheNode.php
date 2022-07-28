@@ -23,25 +23,28 @@ final class BustCacheNode extends StatementNode
 
     public ExpressionNode $file;
 
+    private bool $strictMode;
+
     private bool $autoRefresh;
 
     private BustCachePathProcessor $bustCachePathProcessor;
 
-    public function __construct(ExpressionNode $file, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor)
+    public function __construct(ExpressionNode $file, bool $strictMode, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor)
     {
         $this->file = $file;
+        $this->strictMode = $strictMode;
         $this->autoRefresh = $autoRefresh;
         $this->bustCachePathProcessor = $bustCachePathProcessor;
     }
 
-    public static function create(Tag $tag, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor): self
+    public static function create(Tag $tag, bool $strictMode, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor): self
     {
         $tag->outputMode = $tag::OutputKeepIndentation;
         $tag->expectArguments();
         $autoRefresh = $tag->parser->tryConsumeModifier('dynamic') !== null || $autoRefresh;
         $file = $tag->parser->parseUnquotedStringOrExpression();
 
-        return new self($file, $autoRefresh, $bustCachePathProcessor);
+        return new self($file, $strictMode, $autoRefresh, $bustCachePathProcessor);
     }
 
     /**
@@ -49,7 +52,6 @@ final class BustCacheNode extends StatementNode
      * @return string
      * @throws IOException
      * @throws InvalidManifestException
-     * @throws FileNotFoundException
      */
     public function print(PrintContext $context): string
     {
@@ -63,7 +65,7 @@ final class BustCacheNode extends StatementNode
                 if (! is_string($fileValue)) {
                     throw new \InvalidArgumentException('File path must be a string');
                 }
-                $processedPath = $this->bustCachePathProcessor->__invoke($fileValue, false);
+                $processedPath = $this->bustCachePathProcessor->__invoke($fileValue, true, false);
                 return $context->format(
                     'echo %modify(%dump) %line;',
                     $modifier,
@@ -71,13 +73,15 @@ final class BustCacheNode extends StatementNode
                     $this->position,
                 );
             } catch (\InvalidArgumentException) { // non-literal file argument used => compile time processing not possible
+            } catch (FileNotFoundException) { // missing file => compile time not possible
             }
         }
 
         return $context->format(
-            'echo %modify($this->global->bustCachePathProcessor->__invoke(%node, %dump)) %line;',
+            'echo %modify($this->global->bustCachePathProcessor->__invoke(%node, %dump, %dump)) %line;',
             $modifier,
             $this->file,
+            $this->strictMode,
             $this->autoRefresh,
             $this->position,
         );

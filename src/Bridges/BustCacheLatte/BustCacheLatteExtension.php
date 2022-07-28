@@ -14,11 +14,14 @@ final class BustCacheLatteExtension extends Latte\Extension
 
     private BustCachePathProcessor $bustCachePathProcessor;
 
+    private bool $strictMode;
+
     private bool $autoRefresh;
 
-    public function __construct(BustCachePathProcessor $bustCachePathProcessor, bool $autoRefresh)
+    public function __construct(BustCachePathProcessor $bustCachePathProcessor, bool $strictMode, bool $autoRefresh)
     {
         $this->bustCachePathProcessor = $bustCachePathProcessor;
+        $this->strictMode = $strictMode;
         $this->autoRefresh = $autoRefresh;
     }
 
@@ -28,7 +31,7 @@ final class BustCacheLatteExtension extends Latte\Extension
     public function getTags(): array
     {
         return [
-            'bustCache' => fn (Tag $tag): BustCacheNode => Nodes\BustCacheNode::create($tag, $this->autoRefresh, $this->bustCachePathProcessor),
+            'bustCache' => fn (Tag $tag): BustCacheNode => Nodes\BustCacheNode::create($tag, $this->strictMode, $this->autoRefresh, $this->bustCachePathProcessor),
         ];
     }
 
@@ -45,6 +48,7 @@ final class BustCacheLatteExtension extends Latte\Extension
     public function getCacheKey(Engine $engine): mixed
     {
         return [
+            'strictMode' => $this->strictMode,
             'autoRefresh' => $this->autoRefresh,
         ];
     }

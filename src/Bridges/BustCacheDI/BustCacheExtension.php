@@ -53,6 +53,7 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
             'autoRefresh' => Expect::bool($this->debugMode),
             'manifest' => Expect::anyOf(Expect::bool(), Expect::string())
                 ->default(true),
+            'strictMode' => Expect::bool(false),
         ]);
     }
 
@@ -103,7 +104,14 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
         $pathProcessor = $container->getDefinitionByType(BustCachePathProcessor::class);
         /** @var LatteExtension $latteExtension */
         foreach ($this->compiler->getExtensions(LatteExtension::class) as $latteExtension) {
-            $latteExtension->addExtension(new Statement(BustCacheLatteExtension::class, [$pathProcessor, $this->config->autoRefresh]));
+            $latteExtension->addExtension(new Statement(
+                BustCacheLatteExtension::class,
+                [
+                    'bustCachePathProcessor' => $pathProcessor,
+                    'strictMode' => $this->config->strictMode,
+                    'autoRefresh' => $this->config->autoRefresh,
+                ],
+            ));
         }
     }
 
