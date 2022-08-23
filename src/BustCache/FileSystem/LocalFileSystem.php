@@ -52,7 +52,7 @@ final class LocalFileSystem implements FileSystem
         if (! is_file($fullLocalPath->toString())) {
             throw FileNotFoundException::at($fullLocalPath->toString());
         }
-        if (! str_starts_with((string) realpath($fullLocalPath->toString()), realpath($this->baseDirectoryPath->toString()) . '/')) {
+        if (! str_starts_with((string) realpath($fullLocalPath->toString()), realpath($this->baseDirectoryPath->toString()) . DIRECTORY_SEPARATOR)) {
             throw FileNotFoundException::inBaseDirectory($fullLocalPath->toString(), $this->baseDirectoryPath->toString());
         }
         return File::fromLocalPath($fullLocalPath);
