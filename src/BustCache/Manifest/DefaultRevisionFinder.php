@@ -48,9 +48,9 @@ final class DefaultRevisionFinder implements RevisionFinder
 
         $relativeAssetPathString = Strings::substring($normalizedAssetPath->toString(), Strings::length($basePathPrefix));
         $revisions = $this->loadManifest($manifest->getManifestFile());
-        foreach ($revisions as $originalPath => $revisionPath) {
+        foreach ($revisions as $originalPath => $revisionPathString) {
             if (ltrim($originalPath, '/') === $relativeAssetPathString) {
-                $revisionPath = Path::join($manifest->getBasePath(), $revisionPath);
+                $revisionPath = Path::join($manifest->getBasePath(), $revisionPathString);
                 $revisionFile = $this->fileSystem->getFile($revisionPath);
                 return new Revision($revisionPath, $revisionFile, $manifest->getManifestFile());
             }

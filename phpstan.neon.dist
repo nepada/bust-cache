@@ -30,3 +30,11 @@ parameters:
             message: "#^Calling md5\\(\\) is forbidden, use hash\\(\\) with at least SHA\\-256 for secure hash, or password_hash\\(\\) for passwords$#"
             count: 1
             path: src/BustCache/CacheBustingStrategies/ContentHash.php
+        - # conditional type narrowing
+            message: "#^Overwriting variable \\$path while changing its type from string to Nepada\\\\BustCache\\\\FileSystem\\\\Path$#"
+            count: 1
+            path: src/BustCache/FileSystem/File.php
+        - # conditional type narrowing
+            message: "#^Overwriting variable \\$manifestFilePath while changing its type from string to Nepada\\\\BustCache\\\\FileSystem\\\\Path$#"
+            count: 1
+            path: src/BustCache/Manifest/StaticManifestFinder.php
