@@ -9,6 +9,7 @@ use Latte\Compiler\Nodes\Php\ModifierNode;
 use Latte\Compiler\Nodes\StatementNode;
 use Latte\Compiler\PrintContext;
 use Latte\Compiler\Tag;
+use Latte\Engine;
 use Nepada\BustCache\BustCachePathProcessor;
 use Nepada\BustCache\FileSystem\FileNotFoundException;
 use Nepada\BustCache\FileSystem\IOException;
@@ -41,7 +42,8 @@ final class BustCacheNode extends StatementNode
     {
         $tag->outputMode = $tag::OutputKeepIndentation;
         $tag->expectArguments();
-        $autoRefresh = $tag->parser->tryConsumeModifier('dynamic') !== null || $autoRefresh;
+        $dynamic = Engine::VERSION_ID < 3_00_05 ? $tag->parser->tryConsumeModifier('dynamic') : $tag->parser->tryConsumeSeparatedToken('dynamic');
+        $autoRefresh = $dynamic !== null || $autoRefresh;
         $file = $tag->parser->parseUnquotedStringOrExpression();
 
         return new self($file, $strictMode, $autoRefresh, $bustCachePathProcessor);

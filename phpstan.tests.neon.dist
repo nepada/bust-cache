@@ -22,3 +22,4 @@ parameters:
 
     excludePaths:
         - tests/temp/*
+        - tests/PHPStan/conditional.config.php
