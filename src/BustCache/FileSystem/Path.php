@@ -20,10 +20,10 @@ final class Path
         return new static($path);
     }
 
-    public static function join(Path|string ...$parts): static
+    public static function join(self|string ...$parts): static
     {
         $stringParts = array_map(
-            fn (Path|string $part): string => $part instanceof Path ? $part->toString() : $part,
+            fn (self|string $part): string => $part instanceof self ? $part->toString() : $part,
             $parts,
         );
         $result = array_shift($stringParts) ?? '';
