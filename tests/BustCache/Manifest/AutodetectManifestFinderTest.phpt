@@ -48,9 +48,6 @@ class AutodetectManifestFinderTest extends TestCase
 
     /**
      * @dataProvider provideManifestData
-     * @param string $assetPath
-     * @param string $expectedManifestFile
-     * @param string $expectedBasePath
      */
     public function testFindManifest(string $assetPath, string $expectedManifestFile, string $expectedBasePath): void
     {

@@ -20,12 +20,7 @@ final class StaticManifestFinder implements ManifestFinder
         $this->fileSystem = $fileSystem;
     }
 
-    /**
-     * @param Path|string $manifestFilePath
-     * @param FileSystem $fileSystem
-     * @return static
-     */
-    public static function forFilePath(Path|string $manifestFilePath, FileSystem $fileSystem): self
+    public static function forFilePath(Path|string $manifestFilePath, FileSystem $fileSystem): static
     {
         if (is_string($manifestFilePath)) {
             $manifestFilePath = Path::of($manifestFilePath);
@@ -34,8 +29,6 @@ final class StaticManifestFinder implements ManifestFinder
     }
 
     /**
-     * @param Path $assetPath
-     * @return Manifest
      * @throws FileNotFoundException
      */
     public function find(Path $assetPath): Manifest

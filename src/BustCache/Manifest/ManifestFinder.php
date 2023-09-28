@@ -10,8 +10,6 @@ interface ManifestFinder
 {
 
     /**
-     * @param Path $assetPath
-     * @return Manifest|null
      * @throws FileNotFoundException
      */
     public function find(Path $assetPath): ?Manifest;

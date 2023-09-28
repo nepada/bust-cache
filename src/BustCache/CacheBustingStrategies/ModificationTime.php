@@ -13,8 +13,6 @@ final class ModificationTime implements CacheBustingStrategy
     public const NAME = 'modificationTime';
 
     /**
-     * @param File $file
-     * @return string
      * @throws IOException
      */
     public function calculateHash(File $file): string

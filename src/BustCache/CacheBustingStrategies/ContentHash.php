@@ -15,8 +15,6 @@ final class ContentHash implements CacheBustingStrategy
     private const LENGTH = 10;
 
     /**
-     * @param File $file
-     * @return string
      * @throws IOException
      */
     public function calculateHash(File $file): string

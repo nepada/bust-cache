@@ -23,7 +23,6 @@ final class AutodetectManifestFinder implements ManifestFinder
     private array $manifestFileNames;
 
     /**
-     * @param FileSystem $fileSystem
      * @param string[] $manifestFileNames
      */
     public function __construct(FileSystem $fileSystem, array $manifestFileNames = self::DEFAULT_MANIFEST_FILE_NAMES)

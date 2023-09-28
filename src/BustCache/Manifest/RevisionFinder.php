@@ -11,8 +11,6 @@ interface RevisionFinder
 {
 
     /**
-     * @param Path $assetPath
-     * @return Revision|null
      * @throws IOException
      * @throws InvalidManifestException
      * @throws FileNotFoundException

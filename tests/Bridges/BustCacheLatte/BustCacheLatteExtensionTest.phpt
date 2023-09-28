@@ -28,10 +28,6 @@ class BustCacheLatteExtensionTest extends TestCase
 
     /**
      * @dataProvider provideLatteTagData
-     * @param string $latteString
-     * @param string $expectedCompiledCode
-     * @param bool $strictMode
-     * @param bool $autoRefresh
      */
     public function testLatteTag(string $latteString, string $expectedCompiledCode, bool $strictMode, bool $autoRefresh): void
     {

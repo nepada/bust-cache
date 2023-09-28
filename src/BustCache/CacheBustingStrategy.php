@@ -10,8 +10,6 @@ interface CacheBustingStrategy
 {
 
     /**
-     * @param File $file
-     * @return string
      * @throws IOException
      */
     public function calculateHash(File $file): string;

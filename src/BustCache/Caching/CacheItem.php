@@ -14,7 +14,6 @@ final class CacheItem
     private array $fileDependencies;
 
     /**
-     * @param mixed $value
      * @param FileDependency[] $fileDependencies
      */
     public function __construct(mixed $value, array $fileDependencies = [])

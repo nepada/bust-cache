@@ -9,8 +9,6 @@ interface FileSystem
     public function fileExists(Path $path): bool;
 
     /**
-     * @param Path $path
-     * @return File
      * @throws FileNotFoundException
      */
     public function getFile(Path $path): File;

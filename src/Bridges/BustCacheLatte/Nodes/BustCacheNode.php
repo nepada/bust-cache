@@ -48,8 +48,6 @@ final class BustCacheNode extends StatementNode
     }
 
     /**
-     * @param PrintContext $context
-     * @return string
      * @throws IOException
      * @throws InvalidManifestException
      */

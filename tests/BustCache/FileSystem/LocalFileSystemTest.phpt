@@ -19,8 +19,6 @@ class LocalFileSystemTest extends TestCase
 
     /**
      * @dataProvider provideFileExistsData
-     * @param string $path
-     * @param bool $expectExists
      */
     public function testFileExists(string $path, bool $expectExists): void
     {

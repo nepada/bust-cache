@@ -22,8 +22,6 @@ final class NetteCache implements Cache
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
      * @param File[] $fileDependencies
      */
     public function save(string $key, mixed $value, array $fileDependencies = []): void

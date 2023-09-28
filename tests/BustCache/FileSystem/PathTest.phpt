@@ -19,7 +19,6 @@ class PathTest extends TestCase
     /**
      * @dataProvider provideJoinData
      * @param array<int, Path|string> $parts
-     * @param string $expectedPath
      */
     public function testJoin(array $parts, string $expectedPath): void
     {

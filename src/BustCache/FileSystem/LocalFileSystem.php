@@ -9,7 +9,6 @@ final class LocalFileSystem implements FileSystem
     private Path $baseDirectoryPath;
 
     /**
-     * @param Path $baseDirectoryPath
      * @throws DirectoryNotFoundException
      */
     public function __construct(Path $baseDirectoryPath)
@@ -22,7 +21,6 @@ final class LocalFileSystem implements FileSystem
     }
 
     /**
-     * @param string $baseDir
      * @return LocalFileSystem
      * @throws DirectoryNotFoundException
      */
@@ -42,8 +40,6 @@ final class LocalFileSystem implements FileSystem
     }
 
     /**
-     * @param Path $path
-     * @return File
      * @throws FileNotFoundException
      */
     public function getFile(Path $path): File

@@ -55,9 +55,6 @@ class DefaultRevisionFinderTest extends TestCase
 
     /**
      * @dataProvider provideRevisionData
-     * @param string $manifestFilePath
-     * @param string $assetPath
-     * @param string $expectedRevisionPath
      */
     public function testFindRevision(string $manifestFilePath, string $assetPath, string $expectedRevisionPath): void
     {
@@ -103,8 +100,6 @@ class DefaultRevisionFinderTest extends TestCase
 
     /**
      * @dataProvider provideRevisionNotFoundData
-     * @param string $manifestFilePath
-     * @param string $assetPath
      */
     public function testFindRevisionNotFound(string $manifestFilePath, string $assetPath): void
     {

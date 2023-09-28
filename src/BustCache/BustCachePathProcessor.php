@@ -31,10 +31,6 @@ final class BustCachePathProcessor
     }
 
     /**
-     * @param string $path
-     * @param bool $strictMode
-     * @param bool $autoRefreshCache
-     * @return string
      * @throws FileNotFoundException
      * @throws IOException
      * @throws InvalidManifestException
@@ -66,8 +62,6 @@ final class BustCachePathProcessor
     }
 
     /**
-     * @param Path $assetPath
-     * @return string|null
      * @throws IOException
      * @throws InvalidManifestException
      * @throws FileNotFoundException
@@ -91,8 +85,6 @@ final class BustCachePathProcessor
     }
 
     /**
-     * @param Path $assetPath
-     * @return string
      * @throws FileNotFoundException
      * @throws IOException
      */

@@ -27,8 +27,6 @@ final class DefaultRevisionFinder implements RevisionFinder
     }
 
     /**
-     * @param Path $assetPath
-     * @return Revision|null
      * @throws IOException
      * @throws InvalidManifestException
      * @throws FileNotFoundException
@@ -60,7 +58,6 @@ final class DefaultRevisionFinder implements RevisionFinder
     }
 
     /**
-     * @param File $file
      * @return array<string, string>
      * @throws IOException
      * @throws InvalidManifestException
