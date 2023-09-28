@@ -31,7 +31,7 @@ class NetteCacheTest extends TestCase
         $cache->save(self::KEY, self::VALUE, [$fileDependency]);
         Assert::same(self::VALUE, $cache->load(self::KEY, true), 'read value from cache after saving');
 
-        touch($fileDependency->getPath()->toString());
+        touch($fileDependency->path->toString());
         Assert::same(null, $cache->load(self::KEY, true), 'read value from cache with checking dependencies');
         Assert::same(self::VALUE, $cache->load(self::KEY, false), 'read value from cache without checking dependencies');
     }
@@ -41,11 +41,11 @@ class NetteCacheTest extends TestCase
         $cache = $this->createNetteCache();
         $fileDependency = $this->getFileDependency();
 
-        touch($fileDependency->getPath()->toString());
+        touch($fileDependency->path->toString());
         $cache->save(self::KEY, self::VALUE, [$fileDependency]);
         Assert::same(self::VALUE, $cache->load(self::KEY, true), 'read value from cache after saving');
 
-        unlink($fileDependency->getPath()->toString());
+        unlink($fileDependency->path->toString());
         Assert::same(null, $cache->load(self::KEY, true), 'read value from cache with checking dependencies');
         Assert::same(self::VALUE, $cache->load(self::KEY, false), 'read value from cache without checking dependencies');
     }
@@ -55,13 +55,13 @@ class NetteCacheTest extends TestCase
         $cache = $this->createNetteCache();
         $fileDependency = $this->getFileDependency();
 
-        file_put_contents($fileDependency->getPath()->toString(), 'original');
+        file_put_contents($fileDependency->path->toString(), 'original');
         sleep(1);
         $cache->save(self::KEY, self::VALUE, [$fileDependency]);
         Assert::same(self::VALUE, $cache->load(self::KEY, true), 'read value from cache after saving');
 
-        file_put_contents($fileDependency->getPath()->toString(), 'new');
-        clearstatcache(true, $fileDependency->getPath()->toString());
+        file_put_contents($fileDependency->path->toString(), 'new');
+        clearstatcache(true, $fileDependency->path->toString());
         Assert::same(null, $cache->load(self::KEY, true), 'read value from cache with checking dependencies');
         Assert::same(self::VALUE, $cache->load(self::KEY, false), 'read value from cache without checking dependencies');
     }

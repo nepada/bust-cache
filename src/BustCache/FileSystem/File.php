@@ -6,11 +6,10 @@ namespace Nepada\BustCache\FileSystem;
 final class File
 {
 
-    private Path $path;
-
-    private function __construct(Path $path)
+    private function __construct(
+        public readonly Path $path,
+    )
     {
-        $this->path = $path;
     }
 
     public static function fromLocalPath(Path|string $path): static
@@ -21,6 +20,9 @@ final class File
         return new static($path);
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getPath(): Path
     {
         return $this->path;

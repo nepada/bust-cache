@@ -39,18 +39,18 @@ final class DefaultRevisionFinder implements RevisionFinder
         }
 
         $normalizedAssetPath = Path::join('/', $assetPath->normalize());
-        $basePathPrefix = rtrim($manifest->getBasePath()->toString(), '/') . '/';
+        $basePathPrefix = rtrim($manifest->basePath->toString(), '/') . '/';
         if (! str_starts_with($normalizedAssetPath->toString(), $basePathPrefix)) {
             return null;
         }
 
         $relativeAssetPathString = Strings::substring($normalizedAssetPath->toString(), Strings::length($basePathPrefix));
-        $revisions = $this->loadManifest($manifest->getManifestFile());
+        $revisions = $this->loadManifest($manifest->manifestFile);
         foreach ($revisions as $originalPath => $revisionPathString) {
             if (ltrim($originalPath, '/') === $relativeAssetPathString) {
-                $revisionPath = Path::join($manifest->getBasePath(), $revisionPathString);
+                $revisionPath = Path::join($manifest->basePath, $revisionPathString);
                 $revisionFile = $this->fileSystem->getFile($revisionPath);
-                return new Revision($revisionPath, $revisionFile, $manifest->getManifestFile());
+                return new Revision($revisionPath, $revisionFile, $manifest->manifestFile);
             }
         }
 
@@ -64,20 +64,20 @@ final class DefaultRevisionFinder implements RevisionFinder
      */
     private function loadManifest(File $file): array
     {
-        $content = @file_get_contents($file->getPath()->toString());
+        $content = @file_get_contents($file->path->toString());
         if ($content === false) {
-            throw IOException::failedToReadContents($file->getPath()->toString());
+            throw IOException::failedToReadContents($file->path->toString());
         }
 
         try {
             /** @var array<string, string> $manifest */
             $manifest = Json::decode($content, Json::FORCE_ARRAY);
         } catch (JsonException $exception) {
-            throw InvalidManifestException::invalidJson($file->getPath()->toString(), $exception);
+            throw InvalidManifestException::invalidJson($file->path->toString(), $exception);
         }
 
         if (! Validators::is($manifest, 'string[]')) {
-            throw InvalidManifestException::unexpectedContent($file->getPath()->toString());
+            throw InvalidManifestException::unexpectedContent($file->path->toString());
         }
 
         return $manifest;

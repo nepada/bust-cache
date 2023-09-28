@@ -8,27 +8,30 @@ use Nepada\BustCache\FileSystem\File;
 final class FileDependency
 {
 
-    private string $path;
-
-    private int|false $modificationTime;
-
-    public function __construct(string $path, int|false $mtime)
+    public function __construct(
+        public readonly string $path,
+        public readonly int|false $modificationTime,
+    )
     {
-        $this->path = $path;
-        $this->modificationTime = $mtime;
     }
 
     public static function fromFile(File $file): self
     {
-        $stringPath = $file->getPath()->toString();
+        $stringPath = $file->path->toString();
         return new self($stringPath, @filemtime($stringPath));
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getPath(): string
     {
         return $this->path;
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getModificationTime(): int|false
     {
         return $this->modificationTime;

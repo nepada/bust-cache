@@ -21,13 +21,13 @@ use Nepada\BustCache\Manifest\InvalidManifestException;
 final class BustCacheNode extends StatementNode
 {
 
-    public ExpressionNode $file;
+    private readonly ExpressionNode $file;
 
-    private bool $strictMode;
+    private readonly bool $strictMode;
 
-    private bool $autoRefresh;
+    private readonly bool $autoRefresh;
 
-    private BustCachePathProcessor $bustCachePathProcessor;
+    private readonly BustCachePathProcessor $bustCachePathProcessor;
 
     public function __construct(ExpressionNode $file, bool $strictMode, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor)
     {

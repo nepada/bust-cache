@@ -73,11 +73,11 @@ final class BustCachePathProcessor
             return null;
         }
 
-        $result = $revision->getRevisionPath()->toString();
+        $result = $revision->revisionPath->toString();
         $fileDependencies = [];
-        $fileDependencies[] = $revision->getRevisionFile();
-        if ($revision->getSourceManifestFile() !== null) {
-            $fileDependencies[] = $revision->getSourceManifestFile();
+        $fileDependencies[] = $revision->revisionFile;
+        if ($revision->sourceManifestFile !== null) {
+            $fileDependencies[] = $revision->sourceManifestFile;
         }
         $this->cache->save($this->getCacheKey($assetPath), $result, $fileDependencies);
 

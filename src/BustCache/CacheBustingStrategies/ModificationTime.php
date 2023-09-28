@@ -17,9 +17,9 @@ final class ModificationTime implements CacheBustingStrategy
      */
     public function calculateHash(File $file): string
     {
-        $timestamp = @filemtime($file->getPath()->toString());
+        $timestamp = @filemtime($file->path->toString());
         if ($timestamp === false) {
-            throw IOException::failedToReadModificationTime($file->getPath()->toString());
+            throw IOException::failedToReadModificationTime($file->path->toString());
         }
 
         return (string) $timestamp;

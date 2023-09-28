@@ -41,14 +41,14 @@ final class NetteCache implements Cache
         }
 
         if ($checkFileDependencies) {
-            foreach ($item->getFileDependencies() as $fileDependency) {
-                if ($fileDependency->getModificationTime() !== @filemtime($fileDependency->getPath())) {
+            foreach ($item->fileDependencies as $fileDependency) {
+                if ($fileDependency->modificationTime !== @filemtime($fileDependency->path)) {
                     return null;
                 }
             }
         }
 
-        return $item->getValue();
+        return $item->value;
     }
 
 }

@@ -6,28 +6,24 @@ namespace Nepada\BustCache\Caching;
 final class CacheItem
 {
 
-    private mixed $value;
-
-    /**
-     * @var FileDependency[]
-     */
-    private array $fileDependencies;
-
-    /**
-     * @param FileDependency[] $fileDependencies
-     */
-    public function __construct(mixed $value, array $fileDependencies = [])
+    public function __construct(
+        public readonly mixed $value,
+        /** @var FileDependency[] */
+        public readonly array $fileDependencies = [],
+    )
     {
-        $this->value = $value;
-        $this->fileDependencies = $fileDependencies;
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getValue(): mixed
     {
         return $this->value;
     }
 
     /**
+     * @deprecated read the property directly instead
      * @return FileDependency[]
      */
     public function getFileDependencies(): array

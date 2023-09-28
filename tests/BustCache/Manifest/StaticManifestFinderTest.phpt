@@ -36,8 +36,8 @@ class StaticManifestFinderTest extends TestCase
         $fileSystem = LocalFileSystem::forDirectory(self::FIXTURES_DIR);
         $finder = StaticManifestFinder::forFilePath('manifest.json', $fileSystem);
         $manifest = $finder->find(Path::of('/foo/bar/baz'));
-        Assert::same(realpath(__DIR__ . '/fixtures/manifest.json'), realpath($manifest->getManifestFile()->getPath()->toString()));
-        Assert::same('/', $manifest->getBasePath()->toString());
+        Assert::same(realpath(__DIR__ . '/fixtures/manifest.json'), realpath($manifest->manifestFile->path->toString()));
+        Assert::same('/', $manifest->basePath->toString());
     }
 
     public function testGetStaticManifestWithNonTrivialBasePath(): void
@@ -45,8 +45,8 @@ class StaticManifestFinderTest extends TestCase
         $fileSystem = LocalFileSystem::forDirectory(self::FIXTURES_DIR);
         $finder = StaticManifestFinder::forFilePath('assets/manifest.json', $fileSystem);
         $manifest = $finder->find(Path::of('/foo/bar/baz'));
-        Assert::same(realpath(__DIR__ . '/fixtures/assets/manifest.json'), realpath($manifest->getManifestFile()->getPath()->toString()));
-        Assert::same('/assets', $manifest->getBasePath()->toString());
+        Assert::same(realpath(__DIR__ . '/fixtures/assets/manifest.json'), realpath($manifest->manifestFile->path->toString()));
+        Assert::same('/assets', $manifest->basePath->toString());
     }
 
 }

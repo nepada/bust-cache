@@ -61,9 +61,9 @@ class DefaultRevisionFinderTest extends TestCase
         $finder = $this->createDefaultRevisionFinder($manifestFilePath);
         $revision = $finder->find(Path::of($assetPath));
         Assert::notNull($revision);
-        Assert::same($expectedRevisionPath, $revision->getRevisionPath()->toString());
-        Assert::same(self::FIXTURES_DIR . $expectedRevisionPath, $revision->getRevisionFile()->getPath()->toString());
-        Assert::same(self::FIXTURES_DIR . "/$manifestFilePath", $revision->getSourceManifestFile()?->getPath()->toString());
+        Assert::same($expectedRevisionPath, $revision->revisionPath->toString());
+        Assert::same(self::FIXTURES_DIR . $expectedRevisionPath, $revision->revisionFile->path->toString());
+        Assert::same(self::FIXTURES_DIR . "/$manifestFilePath", $revision->sourceManifestFile?->path->toString());
     }
 
     /**

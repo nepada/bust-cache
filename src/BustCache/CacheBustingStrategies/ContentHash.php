@@ -19,9 +19,9 @@ final class ContentHash implements CacheBustingStrategy
      */
     public function calculateHash(File $file): string
     {
-        $content = @file_get_contents($file->getPath()->toString());
+        $content = @file_get_contents($file->path->toString());
         if ($content === false) {
-            throw IOException::failedToReadContents($file->getPath()->toString());
+            throw IOException::failedToReadContents($file->path->toString());
         }
 
         return substr(md5($content), 0, self::LENGTH);

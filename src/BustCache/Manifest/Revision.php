@@ -9,29 +9,33 @@ use Nepada\BustCache\FileSystem\Path;
 final class Revision
 {
 
-    private Path $revisionPath;
-
-    private File $revisionFile;
-
-    private ?File $sourceManifestFile;
-
-    public function __construct(Path $revisionPath, File $revisionFile, ?File $sourceManifestFile)
+    public function __construct(
+        public readonly Path $revisionPath,
+        public readonly File $revisionFile,
+        public readonly ?File $sourceManifestFile,
+    )
     {
-        $this->revisionPath = $revisionPath;
-        $this->revisionFile = $revisionFile;
-        $this->sourceManifestFile = $sourceManifestFile;
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getRevisionPath(): Path
     {
         return $this->revisionPath;
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getRevisionFile(): File
     {
         return $this->revisionFile;
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getSourceManifestFile(): ?File
     {
         return $this->sourceManifestFile;

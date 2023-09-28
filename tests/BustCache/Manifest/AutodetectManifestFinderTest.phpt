@@ -26,7 +26,7 @@ class AutodetectManifestFinderTest extends TestCase
         $finder = new AutodetectManifestFinder($fileSystem);
         $manifest = $finder->find(Path::of('test.txt'));
         Assert::notNull($manifest);
-        Assert::same(self::FIXTURES_DIR . '/manifest.json', $manifest->getManifestFile()->getPath()->toString());
+        Assert::same(self::FIXTURES_DIR . '/manifest.json', $manifest->manifestFile->path->toString());
     }
 
     public function testReversedManifestFileNamePreference(): void
@@ -35,7 +35,7 @@ class AutodetectManifestFinderTest extends TestCase
         $finder = new AutodetectManifestFinder($fileSystem, array_reverse(AutodetectManifestFinder::DEFAULT_MANIFEST_FILE_NAMES));
         $manifest = $finder->find(Path::of('test.txt'));
         Assert::notNull($manifest);
-        Assert::same(self::FIXTURES_DIR . '/rev-manifest.json', $manifest->getManifestFile()->getPath()->toString());
+        Assert::same(self::FIXTURES_DIR . '/rev-manifest.json', $manifest->manifestFile->path->toString());
     }
 
     public function testManifestNotFound(): void
@@ -55,8 +55,8 @@ class AutodetectManifestFinderTest extends TestCase
         $finder = new AutodetectManifestFinder($fileSystem);
         $manifest = $finder->find(Path::of($assetPath));
         Assert::notNull($manifest);
-        Assert::same($expectedManifestFile, $manifest->getManifestFile()->getPath()->toString());
-        Assert::same($expectedBasePath, $manifest->getBasePath()->toString());
+        Assert::same($expectedManifestFile, $manifest->manifestFile->path->toString());
+        Assert::same($expectedBasePath, $manifest->basePath->toString());
     }
 
     /**

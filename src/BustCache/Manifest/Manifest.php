@@ -9,14 +9,11 @@ use Nepada\BustCache\FileSystem\Path;
 final class Manifest
 {
 
-    private File $manifestFile;
-
-    private Path $basePath;
-
-    private function __construct(File $manifestFile, Path $basePath)
+    private function __construct(
+        public readonly File $manifestFile,
+        public readonly Path $basePath,
+    )
     {
-        $this->manifestFile = $manifestFile;
-        $this->basePath = $basePath;
     }
 
     public static function create(File $manifestFile, Path $basePath): static
@@ -27,11 +24,17 @@ final class Manifest
         );
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getManifestFile(): File
     {
         return $this->manifestFile;
     }
 
+    /**
+     * @deprecated read the property directly instead
+     */
     public function getBasePath(): Path
     {
         return $this->basePath;
