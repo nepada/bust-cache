@@ -27,7 +27,7 @@ parameters:
 
     ignoreErrors:
         - # used for checksum only
-            message: "#^Calling md5\\(\\) is forbidden, use hash\\(\\) with at least SHA\\-256 for secure hash, or password_hash\\(\\) for passwords$#"
+            message: "#^Calling md5\\(\\) is forbidden, use hash\\(\\) with at least SHA\\-256 for secure hash, or password_hash\\(\\) for passwords\\.$#"
             count: 1
             path: src/BustCache/CacheBustingStrategies/ContentHash.php
         - # conditional type narrowing
