@@ -81,7 +81,7 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
 
         $container->addDefinition($this->prefix('cacheBustingStrategy'))
             ->setType(CacheBustingStrategy::class)
-            ->setFactory(self::CACHE_BUSTING_STRATEGIES[$this->config->strategy]);
+            ->setFactory(self::CACHE_BUSTING_STRATEGIES[$this->config->strategy]); // @phpstan-ignore shipmonk.unsafeArrayKey (pre-validated string config value)
 
         $container->addDefinition($this->prefix('cache'))
             ->setType(Cache::class)
