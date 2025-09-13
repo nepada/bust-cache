@@ -14,6 +14,7 @@ use Nepada\BustCache\Manifest\NullManifestFinder;
 use NepadaTests\TestCase;
 use Nette\Utils\Strings;
 use Tester\Assert;
+use function str_replace;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -45,42 +46,42 @@ class BustCacheLatteExtensionTest extends TestCase
             'strictMode' => false,
             'autoRefresh' => true,
             'latteString' => '<script src="{bustCache /test.txt}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
         ];
 
         yield 'file literal, disabled auto refresh' => [
             'strictMode' => false,
             'autoRefresh' => false,
             'latteString' => '<script src="{bustCache /test.txt}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\HtmlHelpers::escapeAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
         ];
 
         yield 'dynamic file literal, disabled auto refresh' => [
             'strictMode' => false,
             'autoRefresh' => false,
             'latteString' => '<script src="{bustCache dynamic /test.txt}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
         ];
 
         yield 'file expression, enabled auto refresh' => [
             'strictMode' => false,
             'autoRefresh' => true,
             'latteString' => '<script src="{bustCache $file}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, true)) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke($file, false, true)) /* line 1 */;',
         ];
 
         yield 'file expression, disabled auto refresh' => [
             'strictMode' => false,
             'autoRefresh' => false,
             'latteString' => '<script src="{bustCache $file}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 1 */;',
         ];
 
         yield 'file expression, disabled auto refresh, enabled strict mode with missing file' => [
             'strictMode' => true,
             'autoRefresh' => false,
             'latteString' => '<script src="{bustCache does-not-exist.txt}"></script>',
-            'expectedCompiledCode' => 'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'does-not-exist.txt\', true, false)) /* line 1 */;',
+            'expectedCompiledCode' => 'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'does-not-exist.txt\', true, false)) /* line 1 */;',
         ];
     }
 
@@ -98,6 +99,18 @@ class BustCacheLatteExtensionTest extends TestCase
 
     private function normalizeCode(string $code): string
     {
+        // BC with Latte <3.1
+        $code = str_replace(
+            [
+                'Filters::escapeHtmlAttr',
+            ],
+            [
+                'HtmlHelpers::escapeAttr',
+            ],
+            $code,
+        );
+        $code = Strings::replace($code, '~line (\d+):\d+~', 'line $1');
+
         return Strings::replace($code, '~^\s*(echo.*)~m', '$1');
     }
 

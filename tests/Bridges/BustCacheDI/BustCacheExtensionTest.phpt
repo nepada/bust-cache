@@ -19,7 +19,9 @@ use NepadaTests\Environment;
 use NepadaTests\TestCase;
 use Nette;
 use Nette\Bridges\ApplicationLatte\LatteFactory;
+use Nette\Utils\Strings;
 use Tester\Assert;
+use function str_replace;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -46,16 +48,16 @@ class BustCacheExtensionTest extends TestCase
 
         $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
+            $this->normalizeCode($compiledCode),
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
+            $this->normalizeCode($compiledCode),
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 3 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 3 */;',
+            $this->normalizeCode($compiledCode),
         );
 
         $renderedCode = $latte->renderToString(self::BASIC_TEMPLATE, ['file' => '/test.txt']);
@@ -104,8 +106,8 @@ class BustCacheExtensionTest extends TestCase
 
         $compiledCode = $latte->compile(self::STRICT_MODE_TEMPLATE);
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/does-not-exist.txt\', true, false)) /* line 1 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/does-not-exist.txt\', true, false)) /* line 1 */;',
+            $this->normalizeCode($compiledCode),
         );
 
         Assert::exception(
@@ -122,8 +124,8 @@ class BustCacheExtensionTest extends TestCase
 
         $compiledCode = $latte->compile(self::STRICT_MODE_TEMPLATE);
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/does-not-exist.txt\', false, false)) /* line 1 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/does-not-exist.txt\', false, false)) /* line 1 */;',
+            $this->normalizeCode($compiledCode),
         );
 
         Assert::error(
@@ -144,16 +146,16 @@ class BustCacheExtensionTest extends TestCase
 
         $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 1 */;',
+            $this->normalizeCode($compiledCode),
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
+            $this->normalizeCode($compiledCode),
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, true)) /* line 3 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke($file, false, true)) /* line 3 */;',
+            $this->normalizeCode($compiledCode),
         );
 
         $renderedCode = $latte->renderToString(self::BASIC_TEMPLATE, ['file' => '/test.txt']);
@@ -171,16 +173,16 @@ class BustCacheExtensionTest extends TestCase
 
         $compiledCode = $latte->compile(self::BASIC_TEMPLATE);
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr(\'/test.txt?a1d0c6e83f\') /* line 1 */;',
+            $this->normalizeCode($compiledCode),
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke(\'/test.txt\', false, true)) /* line 2 */;',
+            $this->normalizeCode($compiledCode),
         );
         Assert::contains(
-            'echo LR\Filters::escapeHtmlAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 3 */;',
-            $compiledCode,
+            'echo LR\HtmlHelpers::escapeAttr($this->global->bustCachePathProcessor->__invoke($file, false, false)) /* line 3 */;',
+            $this->normalizeCode($compiledCode),
         );
 
         $renderedCode = $latte->renderToString(self::BASIC_TEMPLATE, ['file' => '/test.txt']);
@@ -204,6 +206,23 @@ class BustCacheExtensionTest extends TestCase
         $latte = $container->getByType(LatteFactory::class)->create();
         $latte->setLoader(new Latte\Loaders\StringLoader());
         return $latte;
+    }
+
+    private function normalizeCode(string $code): string
+    {
+        // BC with Latte <3.1
+        $code = str_replace(
+            [
+                'Filters::escapeHtmlAttr',
+            ],
+            [
+                'HtmlHelpers::escapeAttr',
+            ],
+            $code,
+        );
+        $code = Strings::replace($code, '~line (\d+):\d+~', 'line $1');
+
+        return $code;
     }
 
 }

@@ -41,7 +41,7 @@ final class BustCacheNode extends StatementNode
     {
         $tag->outputMode = $tag::OutputKeepIndentation;
         $tag->expectArguments();
-        $autoRefresh = $tag->parser->tryConsumeModifier('dynamic') !== null || $autoRefresh;
+        $autoRefresh = @$tag->parser->tryConsumeModifier('dynamic') !== null || $autoRefresh;
         $file = $tag->parser->parseUnquotedStringOrExpression();
 
         return new self($file, $strictMode, $autoRefresh, $bustCachePathProcessor);
@@ -54,7 +54,8 @@ final class BustCacheNode extends StatementNode
     public function print(PrintContext $context): string
     {
         // safeUrl is intentionally disabled, we verify the node content represents a valid file path inside BustCachePathProcessor
-        $modifier = new ModifierNode([], true, false);
+        $modifier = new ModifierNode([], escape: true);
+        $modifier->check = false;
 
         if (! $this->autoRefresh) {
             try {
