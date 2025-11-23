@@ -220,7 +220,7 @@ class BustCacheExtensionTest extends TestCase
             ],
             $code,
         );
-        $code = Strings::replace($code, '~line (\d+):\d+~', 'line $1');
+        $code = Strings::replace($code, '~(?:pos|line) (\d+):\d+~', 'line $1');
 
         return $code;
     }

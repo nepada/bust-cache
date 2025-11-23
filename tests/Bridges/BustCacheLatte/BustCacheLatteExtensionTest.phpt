@@ -109,7 +109,7 @@ class BustCacheLatteExtensionTest extends TestCase
             ],
             $code,
         );
-        $code = Strings::replace($code, '~line (\d+):\d+~', 'line $1');
+        $code = Strings::replace($code, '~(?:pos|line) (\d+):\d+~', 'line $1');
 
         return Strings::replace($code, '~^\s*(echo.*)~m', '$1');
     }
