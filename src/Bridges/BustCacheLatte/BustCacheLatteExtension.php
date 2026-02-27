@@ -36,7 +36,7 @@ final class BustCacheLatteExtension extends Latte\Extension
     }
 
     /**
-     * @return array<mixed>
+     * @return array<string, mixed>
      */
     public function getProviders(): array
     {
