@@ -22,3 +22,7 @@ parameters:
 
     excludePaths:
         - tests/temp/*
+
+    ignoreErrors:
+        -
+            identifier: shipmonk.checkedExceptionInCallable
