@@ -12,17 +12,12 @@ use Nepada\BustCache\BustCachePathProcessor;
 final class BustCacheLatteExtension extends Latte\Extension
 {
 
-    private BustCachePathProcessor $bustCachePathProcessor;
-
-    private bool $strictMode;
-
-    private bool $autoRefresh;
-
-    public function __construct(BustCachePathProcessor $bustCachePathProcessor, bool $strictMode, bool $autoRefresh)
+    public function __construct(
+        private BustCachePathProcessor $bustCachePathProcessor,
+        private bool $strictMode,
+        private bool $autoRefresh,
+    )
     {
-        $this->bustCachePathProcessor = $bustCachePathProcessor;
-        $this->strictMode = $strictMode;
-        $this->autoRefresh = $autoRefresh;
     }
 
     /**

@@ -20,7 +20,10 @@ class PathTest extends TestCase
      * @dataProvider provideJoinData
      * @param array<int, Path|string> $parts
      */
-    public function testJoin(array $parts, string $expectedPath): void
+    public function testJoin(
+        array $parts,
+        string $expectedPath,
+    ): void
     {
         Assert::same($expectedPath, Path::join(...$parts)->toString());
     }

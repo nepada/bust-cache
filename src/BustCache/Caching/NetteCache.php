@@ -9,11 +9,10 @@ use Nette;
 final class NetteCache implements Cache
 {
 
-    private Nette\Caching\Cache $netteCache;
-
-    public function __construct(Nette\Caching\Cache $netteCache)
+    public function __construct(
+        private Nette\Caching\Cache $netteCache,
+    )
     {
-        $this->netteCache = $netteCache;
     }
 
     public static function withStorage(Nette\Caching\Storage $storage): self
@@ -24,7 +23,11 @@ final class NetteCache implements Cache
     /**
      * @param File[] $fileDependencies
      */
-    public function save(string $key, mixed $value, array $fileDependencies = []): void
+    public function save(
+        string $key,
+        mixed $value,
+        array $fileDependencies = [],
+    ): void
     {
         $item = new CacheItem(
             $value,
@@ -33,7 +36,10 @@ final class NetteCache implements Cache
         $this->netteCache->save($key, $item);
     }
 
-    public function load(string $key, bool $checkFileDependencies): mixed
+    public function load(
+        string $key,
+        bool $checkFileDependencies,
+    ): mixed
     {
         $item = $this->netteCache->load($key);
         if (! $item instanceof CacheItem) {

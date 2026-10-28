@@ -8,11 +8,10 @@ use Nette\Utils\FileSystem as NetteFileSystem;
 final class Path
 {
 
-    private string $path;
-
-    private function __construct(string $path)
+    private function __construct(
+        private string $path,
+    )
     {
-        $this->path = $path;
     }
 
     public static function of(string $path): static

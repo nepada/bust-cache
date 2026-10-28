@@ -20,7 +20,10 @@ class LocalFileSystemTest extends TestCase
     /**
      * @dataProvider provideFileExistsData
      */
-    public function testFileExists(string $path, bool $expectExists): void
+    public function testFileExists(
+        string $path,
+        bool $expectExists,
+    ): void
     {
         $localFileSystem = LocalFileSystem::forDirectory(__DIR__ . '/../..');
         Assert::same($expectExists, $localFileSystem->fileExists(Path::of($path)));

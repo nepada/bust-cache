@@ -11,7 +11,10 @@ final class FileNotFoundException extends \RuntimeException
         return new self("File '{$path}' does not exist");
     }
 
-    public static function inBaseDirectory(string $path, string $baseDir): self
+    public static function inBaseDirectory(
+        string $path,
+        string $baseDir,
+    ): self
     {
         return new self("File '{$path}' is outside of allowed base directory '{$baseDir}'");
     }

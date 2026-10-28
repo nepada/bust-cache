@@ -21,23 +21,21 @@ use Nepada\BustCache\Manifest\InvalidManifestException;
 final class BustCacheNode extends StatementNode
 {
 
-    private readonly ExpressionNode $file;
-
-    private readonly bool $strictMode;
-
-    private readonly bool $autoRefresh;
-
-    private readonly BustCachePathProcessor $bustCachePathProcessor;
-
-    public function __construct(ExpressionNode $file, bool $strictMode, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor)
+    public function __construct(
+        private readonly ExpressionNode $file,
+        private readonly bool $strictMode,
+        private readonly bool $autoRefresh,
+        private readonly BustCachePathProcessor $bustCachePathProcessor,
+    )
     {
-        $this->file = $file;
-        $this->strictMode = $strictMode;
-        $this->autoRefresh = $autoRefresh;
-        $this->bustCachePathProcessor = $bustCachePathProcessor;
     }
 
-    public static function create(Tag $tag, bool $strictMode, bool $autoRefresh, BustCachePathProcessor $bustCachePathProcessor): self
+    public static function create(
+        Tag $tag,
+        bool $strictMode,
+        bool $autoRefresh,
+        BustCachePathProcessor $bustCachePathProcessor,
+    ): self
     {
         $tag->outputMode = $tag::OutputKeepIndentation;
         $tag->expectArguments();

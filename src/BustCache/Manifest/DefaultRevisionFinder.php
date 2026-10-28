@@ -16,14 +16,11 @@ use Nette\Utils\Validators;
 final class DefaultRevisionFinder implements RevisionFinder
 {
 
-    private FileSystem $fileSystem;
-
-    private ManifestFinder $manifestFileFinder;
-
-    public function __construct(FileSystem $fileSystem, ManifestFinder $manifestFileFinder)
+    public function __construct(
+        private FileSystem $fileSystem,
+        private ManifestFinder $manifestFileFinder,
+    )
     {
-        $this->fileSystem = $fileSystem;
-        $this->manifestFileFinder = $manifestFileFinder;
     }
 
     /**

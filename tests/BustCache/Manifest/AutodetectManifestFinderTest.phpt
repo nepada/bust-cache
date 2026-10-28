@@ -49,7 +49,11 @@ class AutodetectManifestFinderTest extends TestCase
     /**
      * @dataProvider provideManifestData
      */
-    public function testFindManifest(string $assetPath, string $expectedManifestFile, string $expectedBasePath): void
+    public function testFindManifest(
+        string $assetPath,
+        string $expectedManifestFile,
+        string $expectedBasePath,
+    ): void
     {
         $fileSystem = LocalFileSystem::forDirectory(self::FIXTURES_DIR);
         $finder = new AutodetectManifestFinder($fileSystem);

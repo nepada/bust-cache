@@ -35,14 +35,11 @@ class BustCacheExtension extends Nette\DI\CompilerExtension
         ModificationTime::NAME => ModificationTime::class,
     ];
 
-    private string $wwwDir;
-
-    private bool $debugMode;
-
-    public function __construct(string $wwwDir, bool $debugMode = false)
+    public function __construct(
+        private string $wwwDir,
+        private bool $debugMode = false,
+    )
     {
-        $this->wwwDir = $wwwDir;
-        $this->debugMode = $debugMode;
     }
 
     public function getConfigSchema(): Nette\Schema\Schema

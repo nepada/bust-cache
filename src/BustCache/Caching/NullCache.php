@@ -11,11 +11,18 @@ final class NullCache implements Cache
     /**
      * @param File[] $fileDependencies
      */
-    public function save(string $key, mixed $value, array $fileDependencies = []): void
+    public function save(
+        string $key,
+        mixed $value,
+        array $fileDependencies = [],
+    ): void
     {
     }
 
-    public function load(string $key, bool $checkFileDependencies): mixed
+    public function load(
+        string $key,
+        bool $checkFileDependencies,
+    ): mixed
     {
         return null;
     }

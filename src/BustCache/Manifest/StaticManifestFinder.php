@@ -10,17 +10,17 @@ use Nepada\BustCache\FileSystem\Path;
 final class StaticManifestFinder implements ManifestFinder
 {
 
-    private Path $manifestFilePath;
-
-    private FileSystem $fileSystem;
-
-    private function __construct(Path $manifestFilePath, FileSystem $fileSystem)
+    private function __construct(
+        private Path $manifestFilePath,
+        private FileSystem $fileSystem,
+    )
     {
-        $this->manifestFilePath = $manifestFilePath;
-        $this->fileSystem = $fileSystem;
     }
 
-    public static function forFilePath(Path|string $manifestFilePath, FileSystem $fileSystem): static
+    public static function forFilePath(
+        Path|string $manifestFilePath,
+        FileSystem $fileSystem,
+    ): static
     {
         if (is_string($manifestFilePath)) {
             $manifestFilePath = Path::of($manifestFilePath);

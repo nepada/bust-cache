@@ -14,20 +14,13 @@ use Nepada\BustCache\Manifest\RevisionFinder;
 final class BustCachePathProcessor
 {
 
-    private FileSystem $fileSystem;
-
-    private Cache $cache;
-
-    private RevisionFinder $revisionFinder;
-
-    private CacheBustingStrategy $cacheBustingStrategy;
-
-    public function __construct(FileSystem $fileSystem, Cache $cache, RevisionFinder $revisionFinder, CacheBustingStrategy $cacheBustingStrategy)
+    public function __construct(
+        private FileSystem $fileSystem,
+        private Cache $cache,
+        private RevisionFinder $revisionFinder,
+        private CacheBustingStrategy $cacheBustingStrategy,
+    )
     {
-        $this->fileSystem = $fileSystem;
-        $this->cache = $cache;
-        $this->revisionFinder = $revisionFinder;
-        $this->cacheBustingStrategy = $cacheBustingStrategy;
     }
 
     /**
@@ -35,7 +28,11 @@ final class BustCachePathProcessor
      * @throws IOException
      * @throws InvalidManifestException
      */
-    public function __invoke(string $path, bool $strictMode, bool $autoRefreshCache): string
+    public function __invoke(
+        string $path,
+        bool $strictMode,
+        bool $autoRefreshCache,
+    ): string
     {
         $assetPath = Path::of($path);
         try {
@@ -51,7 +48,10 @@ final class BustCachePathProcessor
         }
     }
 
-    private function loadFromCache(Path $assetPath, bool $checkFileDependencies): ?string
+    private function loadFromCache(
+        Path $assetPath,
+        bool $checkFileDependencies,
+    ): ?string
     {
         $cachedResult = $this->cache->load($this->getCacheKey($assetPath), $checkFileDependencies);
         if (! is_string($cachedResult)) {

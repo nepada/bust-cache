@@ -30,7 +30,12 @@ class BustCacheLatteExtensionTest extends TestCase
     /**
      * @dataProvider provideLatteTagData
      */
-    public function testLatteTag(string $latteString, string $expectedCompiledCode, bool $strictMode, bool $autoRefresh): void
+    public function testLatteTag(
+        string $latteString,
+        string $expectedCompiledCode,
+        bool $strictMode,
+        bool $autoRefresh,
+    ): void
     {
         $latte = $this->createLatte($strictMode, $autoRefresh);
         $actualCode = $this->normalizeCode($latte->compile($latteString));
@@ -85,7 +90,10 @@ class BustCacheLatteExtensionTest extends TestCase
         ];
     }
 
-    private function createLatte(bool $strictMode, bool $autoRefresh): Latte\Engine
+    private function createLatte(
+        bool $strictMode,
+        bool $autoRefresh,
+    ): Latte\Engine
     {
         $fileSystem = LocalFileSystem::forDirectory(self::FIXTURES_DIR);
         $strategy = new ContentHash();

@@ -16,7 +16,10 @@ final class Manifest
     {
     }
 
-    public static function create(File $manifestFile, Path $basePath): static
+    public static function create(
+        File $manifestFile,
+        Path $basePath,
+    ): static
     {
         return new static(
             $manifestFile,

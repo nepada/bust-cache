@@ -56,7 +56,11 @@ class DefaultRevisionFinderTest extends TestCase
     /**
      * @dataProvider provideRevisionData
      */
-    public function testFindRevision(string $manifestFilePath, string $assetPath, string $expectedRevisionPath): void
+    public function testFindRevision(
+        string $manifestFilePath,
+        string $assetPath,
+        string $expectedRevisionPath,
+    ): void
     {
         $finder = $this->createDefaultRevisionFinder($manifestFilePath);
         $revision = $finder->find(Path::of($assetPath));
@@ -101,7 +105,10 @@ class DefaultRevisionFinderTest extends TestCase
     /**
      * @dataProvider provideRevisionNotFoundData
      */
-    public function testFindRevisionNotFound(string $manifestFilePath, string $assetPath): void
+    public function testFindRevisionNotFound(
+        string $manifestFilePath,
+        string $assetPath,
+    ): void
     {
         $finder = $this->createDefaultRevisionFinder($manifestFilePath);
         $revision = $finder->find(Path::of($assetPath));

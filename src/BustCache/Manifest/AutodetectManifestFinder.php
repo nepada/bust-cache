@@ -15,20 +15,14 @@ final class AutodetectManifestFinder implements ManifestFinder
         'rev-manifest.json',
     ];
 
-    private FileSystem $fileSystem;
-
-    /**
-     * @var string[]
-     */
-    private array $manifestFileNames;
-
     /**
      * @param string[] $manifestFileNames
      */
-    public function __construct(FileSystem $fileSystem, array $manifestFileNames = self::DEFAULT_MANIFEST_FILE_NAMES)
+    public function __construct(
+        private FileSystem $fileSystem,
+        private array $manifestFileNames = self::DEFAULT_MANIFEST_FILE_NAMES,
+    )
     {
-        $this->fileSystem = $fileSystem;
-        $this->manifestFileNames = $manifestFileNames;
     }
 
     public function find(Path $assetPath): ?Manifest
